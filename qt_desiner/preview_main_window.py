@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import os,sys
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -113,7 +113,7 @@ class Ui_MainWindow(object):
         self.menuConfigura_es_2.setTitle(_translate("MainWindow", "Configurações"))
         self.menuConfigura_es_Avan_adas.setTitle(_translate("MainWindow", "Configurações avançadas"))
         self.actionSalvar.setText(_translate("MainWindow", "Salvar"))
-import icones_rc
+from icones import icones_rc
 
 
 if __name__ == "__main__":
