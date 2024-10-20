@@ -14,7 +14,7 @@
    <string>lion</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icones/icones.qrc">
+   <iconset resource="../icones/icones.qrc">
     <normaloff>:/icones/lion.png</normaloff>:/icones/lion.png</iconset>
   </property>
   <widget class="QWidget" name="gridMainWindow">
@@ -143,7 +143,7 @@ image: url(:/icones/comecar.png);
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionSalvar">
    <property name="icon">
-    <iconset resource="icones/icones.qrc">
+    <iconset resource="../icones/icones.qrc">
      <normaloff>:/icones/salvar.png</normaloff>:/icones/salvar.png</iconset>
    </property>
    <property name="text">
@@ -152,7 +152,7 @@ image: url(:/icones/comecar.png);
   </action>
  </widget>
  <resources>
-  <include location="icones/icones.qrc"/>
+  <include location="../icones/icones.qrc"/>
  </resources>
  <connections/>
 </ui>
