@@ -113,7 +113,7 @@ class Ui_MainWindow(object):
         self.menuConfigura_es_2.setTitle(_translate("MainWindow", "Configurações"))
         self.menuConfigura_es_Avan_adas.setTitle(_translate("MainWindow", "Configurações avançadas"))
         self.actionSalvar.setText(_translate("MainWindow", "Salvar"))
-from icones import icones_rc
+import py_GUIs.icones_rc
 
 
 if __name__ == "__main__":
