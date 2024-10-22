@@ -11,5 +11,8 @@ window = SuperMainWindow()
 # Exibe a janela
 window.show()
 
+# Inicia a câmera
+window.start_camera()
+
 # Executa o loop da aplicação
 sys.exit(app.exec_())
