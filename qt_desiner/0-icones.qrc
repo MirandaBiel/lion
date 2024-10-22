@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icones">
+    <file>atualizar.png</file>
+    <file>comecar.png</file>
+    <file>configurar.png</file>
+    <file>coracao.png</file>
+    <file>grafico.png</file>
+    <file>icones.qrc</file>
+    <file>leao.png</file>
+    <file>lion.png</file>
+    <file>respiracao.png</file>
+    <file>salvar.png</file>
+    <file>tempo.png</file>
+  </qresource>
+</RCC>
