@@ -9,10 +9,10 @@ from PyQt5.QtPrintSupport import *
 #from picamera2.previews.qt import QGlPicamera2
 import os, sys
  
-from py_GUIs.preview_main_window import Ui_MainWindow
+from py_GUIs.main_window import Ui_MainWindow
 
-class preview_main_window(QMainWindow):
+class super_main_window(QMainWindow):
     def __init__(self, *args, **kwargs):
-        super(preview_main_window, self).__init__(*args, **kwargs)
+        super(super_main_window, self).__init__(*args, **kwargs)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)

@@ -1,8 +1,15 @@
 import sys
-from PyQt5.QtWidgets import QDialog, QMainWindow, QApplication
-from modulos.main_window import preview_main_window 
+from PyQt5.QtWidgets import QApplication
+from modulos.super_main_window import SuperMainWindow
 
+# Cria a aplicação
 app = QApplication(sys.argv)
-window = preview_main_window()
+
+# Instancia a janela principal da aplicação
+window = SuperMainWindow()
+
+# Exibe a janela
 window.show()
+
+# Executa o loop da aplicação
 sys.exit(app.exec_())
