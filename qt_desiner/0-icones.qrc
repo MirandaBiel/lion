@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="icones">
     <file>atualizar.png</file>
+    <file>rosto.png</file>
     <file>comecar.png</file>
     <file>configurar.png</file>
     <file>coracao.png</file>
