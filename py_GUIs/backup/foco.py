@@ -129,7 +129,7 @@ class Ui_Dialog(object):
         self.pushButton_trigger_start.setText(_translate("Dialog", "Start"))
         self.pushButton_trigger_cancel.setText(_translate("Dialog", "Cancel"))
         self.pushButton_main_w.setText(_translate("Dialog", "Voltar"))
-import icones_rc
+import py_GUIs.icones_rc
 
 
 if __name__ == "__main__":
@@ -138,5 +138,5 @@ if __name__ == "__main__":
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
-    Dialog.show()
+    Dialog.showMaximized()
     sys.exit(app.exec_())

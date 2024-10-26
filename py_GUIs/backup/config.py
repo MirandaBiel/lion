@@ -216,7 +216,7 @@ class Ui_Dialog(object):
         self.radioButton_picos.setText(_translate("Dialog", "Detecção de picos"))
         self.radioButton_espectro.setText(_translate("Dialog", "Análise Espectral"))
         self.pushButton_main_w.setText(_translate("Dialog", "Voltar"))
-import icones_rc
+import py_GUIs.icones_rc
 
 
 if __name__ == "__main__":
