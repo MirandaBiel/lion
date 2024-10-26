@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5 import QtGui, QtWidgets
 # from picamera2 import Picamera2
