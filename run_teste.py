@@ -9,7 +9,7 @@ app = QApplication(sys.argv)
 window = SuperFoco()
 
 # Exibe a janela
-window.show()
+window.showMaximized()
 
 # Executa o loop da aplicação
 sys.exit(app.exec_())

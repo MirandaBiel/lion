@@ -138,5 +138,5 @@ if __name__ == "__main__":
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
-    Dialog.show()
+    Dialog.showMaximized()
     sys.exit(app.exec_())

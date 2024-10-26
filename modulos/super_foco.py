@@ -21,7 +21,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     
     # Cria uma instância da janela principal
-    main_window = SuperFoco()
-    main_window.show()
+    foco_window = SuperFoco()
+    foco_window.showMaximized()
 
     sys.exit(app.exec_())
