@@ -1,12 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from modulos.super_foco import SuperFoco
+from modulos.super_config import SuperConfig
 
 # Cria a aplicação
 app = QApplication(sys.argv)
 
 # Instancia a janela principal da aplicação
-window = SuperFoco()
+window = SuperConfig()
 
 # Exibe a janela
 window.showMaximized()

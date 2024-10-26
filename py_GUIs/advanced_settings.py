@@ -296,7 +296,7 @@ class Ui_Dialog(object):
         self.comboBox_Noise_redu_mode.setItemText(0, _translate("Dialog", "Off "))
         self.comboBox_Noise_redu_mode.setItemText(1, _translate("Dialog", "Fast"))
         self.comboBox_Noise_redu_mode.setItemText(2, _translate("Dialog", "HighQuality"))
-import icones_rc
+import py_GUIs.icones_rc
 
 
 if __name__ == "__main__":
