@@ -251,7 +251,7 @@ class Ui_Dialog(object):
         self.lineEdit_iq2.setText(_translate("Dialog", "*"))
         self.pushButton_amostragem.setText(_translate("Dialog", "Análise da amostragem"))
         self.pushButton_main_w.setText(_translate("Dialog", "Voltar"))
-import icones_rc
+import py_GUIs.icones_rc
 
 
 if __name__ == "__main__":

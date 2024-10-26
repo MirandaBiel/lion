@@ -14,7 +14,17 @@ class SuperFoco(QDialog):
         # Inicializa a interface gerada pelo Qt Designer
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.pushButton_main_w.clicked.connect(self.voltar)
         
+    def voltar(self):
+        print("VOLTA")
+        
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
