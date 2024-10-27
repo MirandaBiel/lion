@@ -22,20 +22,18 @@ class SuperMainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Inicializando as janelas filhas e passando `self` como referência para `main_window`
+        self.advanced_settings_window = SuperAdvancedSettings(self)
+        self.config_window = SuperConfig(self)
+        self.foco_window = SuperFoco(self)
+        self.results_window = SuperResults(self)
+
         # Conecta os itens do menubar com os métodos que abrem as janelas
         self.ui.menuFoco.triggered.connect(self.open_foco_window)
         self.ui.menuConfigura_es.triggered.connect(self.open_config_window)
         self.ui.menuConfigura_es_avan_adas.triggered.connect(self.open_advanced_settings_window)
         self.ui.menuResultados.triggered.connect(self.open_results_window)
         
-
-    def setup_camera(self):
-        # Exemplo de como inicializar a câmera (descomente se usar Picamera2)
-        # self.ui.picam2 = Picamera2()
-        # self.ui.qpicamera2 = QGlPicamera2(self.ui.picam2, width=800, height=600, keep_ar=False)
-        # self.ui.gridPreview.addWidget(self.ui.qpicamera2, 0, 0, 1, 1)
-        pass
-
     def start_camera(self):
         # Método para iniciar a câmera
         if self.ui.picam2 is not None:
@@ -48,23 +46,19 @@ class SuperMainWindow(QMainWindow):
 
     # Métodos para abrir cada janela
     def open_foco_window(self):
-        # Instancia e exibe a janela "Foco"
-        self.foco_window = SuperFoco(self)
+        self.hide()
         self.foco_window.showMaximized()
 
     def open_config_window(self):
-        # Instancia e exibe a janela "Configurações"
-        self.config_window = SuperConfig(self)
+        self.hide()
         self.config_window.showMaximized()
 
     def open_advanced_settings_window(self):
-        # Instancia e exibe a janela "Configurações avançadas"
-        self.advanced_settings_window = SuperAdvancedSettings(self)
+        self.hide()
         self.advanced_settings_window.showMaximized()
 
     def open_results_window(self):
-        # Instancia e exibe a janela "Resultados"
-        self.results_window = SuperResults(self)
+        self.hide()
         self.results_window.showMaximized()
 
 
