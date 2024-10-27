@@ -193,7 +193,7 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         self.pushButton_salvar.setFont(font)
         self.pushButton_salvar.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(255, 0, 0);")
         self.pushButton_salvar.setObjectName("pushButton_salvar")
         self.horizontalLayout_janelas.addWidget(self.pushButton_salvar)
         self.pushButton_foco = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -201,7 +201,7 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         self.pushButton_foco.setFont(font)
         self.pushButton_foco.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(255, 0, 0);")
         self.pushButton_foco.setObjectName("pushButton_foco")
         self.horizontalLayout_janelas.addWidget(self.pushButton_foco)
         self.pushButton_config = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -209,7 +209,7 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         self.pushButton_config.setFont(font)
         self.pushButton_config.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(255, 0, 0);")
         self.pushButton_config.setObjectName("pushButton_config")
         self.horizontalLayout_janelas.addWidget(self.pushButton_config)
         self.pushButton_config_avanca = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -217,7 +217,7 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         self.pushButton_config_avanca.setFont(font)
         self.pushButton_config_avanca.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(255, 0, 0);")
         self.pushButton_config_avanca.setObjectName("pushButton_config_avanca")
         self.horizontalLayout_janelas.addWidget(self.pushButton_config_avanca)
         self.pushButton_resultados = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -225,7 +225,7 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         self.pushButton_resultados.setFont(font)
         self.pushButton_resultados.setStyleSheet("background-color: rgb(0, 0, 0);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(255, 0, 0);")
         self.pushButton_resultados.setObjectName("pushButton_resultados")
         self.horizontalLayout_janelas.addWidget(self.pushButton_resultados)
 
