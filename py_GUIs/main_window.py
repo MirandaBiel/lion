@@ -179,7 +179,7 @@ class Ui_Dialog(object):
         #self.preview_BOX_2.setStyleSheet("background-color: rgb(0, 0, 255);")
         #self.preview_BOX_2.setText("")
         #self.preview_BOX_2.setObjectName("preview_BOX_2")
-        self.gridPreview_2.addWidget(self.preview_BOX_2, 0, 0, 1, 1)
+        self.gridPreview_2.addWidget(self.qpicamera2, 0, 0, 1, 1)
 
 
         self.horizontalLayoutWidget = QtWidgets.QWidget(Dialog)
@@ -284,5 +284,5 @@ if __name__ == "__main__":
 
     # Iniciando a câmera após a interface gráfica estar pronta
     ui.picam2.start()
-    
+
     sys.exit(app.exec_())
