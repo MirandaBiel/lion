@@ -6,6 +6,13 @@ from PyQt5 import QtGui, QtWidgets
 import sys
 from py_GUIs.main_window import Ui_MainWindow
 
+
+# Importa as classes correspondentes de cada janela da pasta 'modulos'
+from modulos.super_foco import SuperFoco
+from modulos.super_config import SuperConfig
+from modulos.super_advanced_settings import SuperAdvancedSettings
+from modulos.super_results import SuperResults
+
 # Classe principal que expande a janela principal da aplicação
 class SuperMainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -14,6 +21,12 @@ class SuperMainWindow(QMainWindow):
         # Inicializa a interface gerada pelo Qt Designer
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Conecta os itens do menubar com os métodos que abrem as janelas
+        self.ui.menuFoco.triggered.connect(self.open_foco_window)
+        self.ui.menuConfigura_es.triggered.connect(self.open_config_window)
+        self.ui.menuConfigura_es_avan_adas.triggered.connect(self.open_advanced_settings_window)
+        self.ui.menuResultados.triggered.connect(self.open_results_window)
         
 
     def setup_camera(self):
@@ -32,6 +45,27 @@ class SuperMainWindow(QMainWindow):
         # Método para parar a câmera
         if self.ui.picam2 is not None:
             self.ui.picam2.stop()
+
+    # Métodos para abrir cada janela
+    def open_foco_window(self):
+        # Instancia e exibe a janela "Foco"
+        self.foco_window = SuperFoco(self)
+        self.foco_window.showMaximized()
+
+    def open_config_window(self):
+        # Instancia e exibe a janela "Configurações"
+        self.config_window = SuperConfig(self)
+        self.config_window.showMaximized()
+
+    def open_advanced_settings_window(self):
+        # Instancia e exibe a janela "Configurações avançadas"
+        self.advanced_settings_window = SuperAdvancedSettings(self)
+        self.advanced_settings_window.showMaximized()
+
+    def open_results_window(self):
+        # Instancia e exibe a janela "Resultados"
+        self.results_window = SuperResults(self)
+        self.results_window.showMaximized()
 
 
 if __name__ == "__main__":
