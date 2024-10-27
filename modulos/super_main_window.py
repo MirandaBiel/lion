@@ -27,12 +27,6 @@ class SuperMainWindow(QDialog):
         self.config_window = SuperConfig(self)
         self.foco_window = SuperFoco(self)
         self.results_window = SuperResults(self)
-
-        # Conecta os itens do menubar com os métodos que abrem as janelas
-        self.ui.menuFoco.triggered.connect(self.open_foco_window)
-        self.ui.menuConfigura_es.triggered.connect(self.open_config_window)
-        self.ui.menuConfigura_es_avan_adas.triggered.connect(self.open_advanced_settings_window)
-        self.ui.menuResultados.triggered.connect(self.open_results_window)
         
     def start_camera(self):
         # Método para iniciar a câmera
