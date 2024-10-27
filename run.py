@@ -9,7 +9,7 @@ app = QApplication(sys.argv)
 window = SuperMainWindow()
 
 # Exibe a janela
-window.show()
+window.showMaximized()
 
 # Inicia a câmera
 window.start_camera()
