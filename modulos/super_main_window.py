@@ -4,7 +4,7 @@ from PyQt5 import QtGui, QtWidgets
 # from picamera2 import Picamera2
 # from picamera2.previews.qt import QGlPicamera2
 import sys
-from py_GUIs.main_window import Ui_MainWindow
+from py_GUIs.main_window import Ui_Dialog
 
 
 # Importa as classes correspondentes de cada janela da pasta 'modulos'
@@ -14,12 +14,12 @@ from modulos.super_advanced_settings import SuperAdvancedSettings
 from modulos.super_results import SuperResults
 
 # Classe principal que expande a janela principal da aplicação
-class SuperMainWindow(QMainWindow):
+class SuperMainWindow(QDialog):
     def __init__(self, *args, **kwargs):
         super(SuperMainWindow, self).__init__(*args, **kwargs)
         
         # Inicializa a interface gerada pelo Qt Designer
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
