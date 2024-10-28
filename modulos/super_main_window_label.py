@@ -21,6 +21,10 @@ class SuperMainWindow(QDialog):
         # Inicializa a interface gerada pelo Qt Designer
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.pushButton_config.clicked.connect(self.open_config_window)
+        self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
+        self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
+        self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
