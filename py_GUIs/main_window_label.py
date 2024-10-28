@@ -260,7 +260,7 @@ class Ui_Dialog(object):
         self.pushButton_config.setText(_translate("Dialog", "Configurações"))
         self.pushButton_config_avanca.setText(_translate("Dialog", "Configurações avançadas"))
         self.pushButton_resultados.setText(_translate("Dialog", "Resultados"))
-import icones_rc
+import py_GUIs.icones_rc
 
 
 if __name__ == "__main__":
