@@ -15,5 +15,7 @@ picam2.start()
 
 for _ in range(2):
     main, metadata = picam2.capture_arrays()
+    print(metadata)
+    print(main)
 
 picam2.stop()
