@@ -1,5 +1,6 @@
 from picamera2.outputs import FileOutput
 from picamera2.encoders import Encoder
+from picamera2 import Picamera2
 import io
 import time
 
