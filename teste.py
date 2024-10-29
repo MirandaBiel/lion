@@ -15,7 +15,7 @@ tempos_de_captura = []
 picam2 = Picamera2()
 video_config = picam2.create_video_configuration(
     controls={"FrameDurationLimits": (33333, 33333)},  # Limita para 30 fps
-    main={"size": (800, 600)}
+    main={"format": 'RGB888', "size": (800, 600)}
 )
 picam2.configure(video_config)
 picam2.start()
@@ -37,13 +37,11 @@ picam2.stop()
 print("\nExibindo os quadros capturados a 30 fps:")
 
 for frame in queue:
-    print(frame)
 
-    '''
     cv2.imshow("Frame", frame)
 
     # Define um delay de 33 ms para simular 30 fps e fecha a janela ao pressionar 'q'
     if cv2.waitKey(33) & 0xFF == ord('q'):
         break
-    '''
+
 cv2.destroyAllWindows()
