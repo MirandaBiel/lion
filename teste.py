@@ -10,7 +10,7 @@ video_config = picam2.create_video_configuration(main={"size": (800, 600)})
 picam2.configure(video_config)
 
 encoder = Encoder()
-buffer = io.Bytes()
+buffer = io.BytesIO()
 output = FileOutput(buffer)
 
 picam2.start_recording(encoder, output)
