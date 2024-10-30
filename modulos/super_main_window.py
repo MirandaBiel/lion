@@ -65,7 +65,7 @@ class SuperMainWindow(QDialog):
     def config_camera(self):
         video_config = self.ui.picam2.create_video_configuration(
             controls={"FrameDurationLimits": (33333, 33333)},  # Limita para 30 fps
-            main={"format": 'RGB888', "size": (800, 600)}
+            main={"size": (800, 600)}
         )
         self.ui.picam2.configure(video_config)
         print(self.ui.picam2.camera_configuration())
