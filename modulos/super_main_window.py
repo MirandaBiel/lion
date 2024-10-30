@@ -37,6 +37,7 @@ class SuperMainWindow(QDialog):
     def start_camera(self):
         # Método para iniciar a câmera
         if self.ui.picam2 is not None:
+            self.config_camera()
             self.ui.picam2.start()
 
     def stop_camera(self):
@@ -69,9 +70,6 @@ class SuperMainWindow(QDialog):
         self.ui.picam2.configure(video_config)
 
     def caputre(self):
-        # Configura a camera
-        self.config_camera()
-
         # Parametros da captura
         fs = 30  # Taxa de quadros em Hz
         ts = 5   # Duracao da captura em segundos
@@ -83,7 +81,7 @@ class SuperMainWindow(QDialog):
 
         # Captura e armazena os quadros na fila
         for _ in range(n_frames):
-            [main], metadata = picam2.capture_arrays()
+            [main], metadata = self.ui.picam2.capture_arrays()
             tempos_de_captura.append(metadata["SensorTimestamp"])
             queue.append(main)  # Adiciona o quadro Ã  fila
 
