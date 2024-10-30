@@ -68,6 +68,7 @@ class SuperMainWindow(QDialog):
             main={"format": 'RGB888', "size": (800, 600)}
         )
         self.ui.picam2.configure(video_config)
+        print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
         # Parametros da captura
