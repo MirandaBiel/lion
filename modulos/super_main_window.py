@@ -81,10 +81,14 @@ class SuperMainWindow(QDialog):
         tempos_de_captura = []
 
         # Captura e armazena os quadros na fila
-        for _ in range(n_frames):
+        for i in range(n_frames):
             [main], metadata = self.ui.picam2.capture_arrays()
             tempos_de_captura.append(metadata["SensorTimestamp"])
             queue.append(main)  # Adiciona o quadro Ã  fila
+
+            # Calcula e atualiza a porcentagem na progressBar_2
+            progress_percent = int((i + 1) / n_frames * 100)
+            self.ui.progressBar_2.setValue(progress_percent)
 
         # Calcula os intervalos entre os tempos de captura
         intervalos = [(((tempos_de_captura[i+1] - tempos_de_captura[i]) * 0.000001) - 33.333)
