@@ -2,9 +2,9 @@ from picamera2 import Picamera2
 from collections import deque
 import cv2
 
-# ParÃ¢metros da captura
+# Parametros da captura
 fs = 30  # Taxa de quadros em Hz
-ts = 5   # DuraÃ§Ã£o da captura em segundos
+ts = 5   # Duracao da captura em segundos
 n_frames = fs * ts + 10  # NÃºmero total de quadros a capturar
 
 # Cria a fila com tamanho mÃ¡ximo

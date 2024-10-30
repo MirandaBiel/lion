@@ -4,6 +4,7 @@ from PyQt5 import QtGui, QtWidgets
 # from picamera2 import Picamera2
 # from picamera2.previews.qt import QGlPicamera2
 import sys
+from collections import deque
 from py_GUIs.main_window import Ui_Dialog
 
 
@@ -25,6 +26,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
+        self.ui.startButton.clicked.connect(self.caputre)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -58,6 +60,38 @@ class SuperMainWindow(QDialog):
     def open_results_window(self):
         self.hide()
         self.results_window.showMaximized()
+
+    def config_camera(self):
+        video_config = self.ui.picam2.create_video_configuration(
+            controls={"FrameDurationLimits": (33333, 33333)},  # Limita para 30 fps
+            main={"format": 'RGB888', "size": (800, 600)}
+        )
+        self.ui.picam2.configure(video_config)
+
+    def caputre(self):
+        # Configura a camera
+        self.config_camera()
+
+        # Parametros da captura
+        fs = 30  # Taxa de quadros em Hz
+        ts = 5   # Duracao da captura em segundos
+        n_frames = fs * ts + 10  # NÃºmero total de quadros a capturar
+
+        # Cria a fila com tamanho mÃ¡ximo
+        queue = deque(maxlen=n_frames)
+        tempos_de_captura = []
+
+        # Captura e armazena os quadros na fila
+        for _ in range(n_frames):
+            [main], metadata = picam2.capture_arrays()
+            tempos_de_captura.append(metadata["SensorTimestamp"])
+            queue.append(main)  # Adiciona o quadro Ã  fila
+
+        # Calcula os intervalos entre os tempos de captura
+        intervalos = [(((tempos_de_captura[i+1] - tempos_de_captura[i]) * 0.000001) - 33.333)
+                    for i in range(len(tempos_de_captura) - 1)]
+        print("Intervalos entre capturas:", intervalos)
+
 
 
 if __name__ == "__main__":
