@@ -82,7 +82,9 @@ class SuperMainWindow(QDialog):
 
         # Captura e armazena os quadros na fila
         for i in range(n_frames):
+            print(i)
             [main], metadata = self.ui.picam2.capture_arrays()
+            print(i)
             tempos_de_captura.append(metadata["SensorTimestamp"])
             queue.append(main)  # Adiciona o quadro Ã  fila
 
