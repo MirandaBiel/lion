@@ -93,11 +93,13 @@ class SuperMainWindow(QDialog):
         print("Intervalos entre capturas:", intervalos)
         
         self.ui.startButton.setEnabled(True)
+        self.cont = 0
 
     def capture_done(self, job):
         [main], metadata = self.ui.picam2.wait(job)
         self.tempos_de_captura.append(metadata["SensorTimestamp"])
         self.queue.append(main)
+        print(len(self.tempos_de_captura))
 
         # Calcula e atualiza a porcentagem na progressBar_2
         progress_percent = int((self.cont + 1) / self.n_frames * 100)
