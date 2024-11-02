@@ -1,16 +1,11 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 # from picamera2 import Picamera2
 # from picamera2.previews.qt import QGlPicamera2
 import sys
 from collections import deque
 from py_GUIs.main_window import Ui_Dialog
-from picamera2.outputs import FileOutput
-from picamera2.encoders import Encoder
-import numpy as np
-import io
-import time
 
 
 # Importa as classes correspondentes de cada janela da pasta 'modulos'
@@ -32,6 +27,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
         self.ui.startButton.clicked.connect(self.caputre)
+        self.ui.qpicamera2.done_signal.connect(self.capture_done, type=QtCore.Qt.QueuedConnection)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -39,8 +35,14 @@ class SuperMainWindow(QDialog):
         self.foco_window = SuperFoco(self)
         self.results_window = SuperResults(self)
 
-        # Variáveis para captura
-        self.frames = []
+        # Variáveis de captura
+        self.fs = 30  # Taxa de quadros em Hz
+        self.ts = 5   # Duracao da captura em segundos
+        self.n_frames = self.fs * self.ts  # NÃºmero total de quadros a capturar
+        self.queue = deque(maxlen=self.n_frames)
+        self.tempos_de_captura = []
+        self.cont = 0
+
         
     def start_camera(self):
         # Método para iniciar a câmera
@@ -79,37 +81,29 @@ class SuperMainWindow(QDialog):
         print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
-        # InicializaÃ§Ã£o do encoder e buffer
-        encoder = Encoder()
-        buffer = io.BytesIO()
-        output = FileOutput(buffer)
+        self.ui.startButton.setEnabled(False)
 
-        self.ui.picam2.start_recording(encoder, output)
-        time.sleep(5)  # Grava por 5 segundos
-        self.ui.picam2.stop_recording()
+        # Captura e armazena os quadros na fila
+        for i in range(self.n_frames):
+            self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
 
-        # Converte o buffer em uma lista de quadros em formato BGR
-        buffer.seek(0)  # Retorna ao inÃ­cio do buffer
-
-        # Carrega cada quadro do buffer e remove o canal alfa
-        while buffer.tell() < len(buffer.getvalue()):
-            # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
-            frame_data = buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
-            if not frame_data:
-                break
-            
-            # Converte o quadro em um array numpy e remove o canal alfa
-            frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
-            frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
-            
-            self.frames.append(frame_bgr)  # Armazena o quadro BGR na lista
-
-        print("PROCESSO FINALIZADO")
-        print(len(self.frames))
+        # Calcula os intervalos entre os tempos de captura
+        intervalos = [(((self.tempos_de_captura[i+1] - self.tempos_de_captura[i]) * 0.000001) - 33.333)
+                    for i in range(len(self.tempos_de_captura) - 1)]
+        print("Intervalos entre capturas:", intervalos)
         
-        # Esvazia o buffer
-        #buffer.truncate(0)  # Limpa o conteúdo do buffer
-        #buffer.seek(0)      # Posiciona o ponteiro no início do buffer
+        self.ui.startButton.setEnabled(True)
+
+    def capture_done(self, job):
+        [main], metadata = self.ui.picam2.wait(job)
+        self.tempos_de_captura.append(metadata["SensorTimestamp"])
+        self.queue.append(main)
+
+        # Calcula e atualiza a porcentagem na progressBar_2
+        progress_percent = int((self.cont + 1) / self.n_frames * 100)
+        self.ui.progressBar_2.setValue(progress_percent)
+        self.cont = self.cont + 1
+
 
 
 if __name__ == "__main__":
