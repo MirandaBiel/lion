@@ -40,9 +40,6 @@ class SuperMainWindow(QDialog):
         self.results_window = SuperResults(self)
 
         # Variáveis para captura
-        self.encoder = Encoder()
-        self.buffer = io.BytesIO()
-        self.output = FileOutput(self.buffer)
         self.frames = []
         
     def start_camera(self):
@@ -82,17 +79,22 @@ class SuperMainWindow(QDialog):
         print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
-        self.ui.picam2.start_recording(self.encoder, self.output)
+        # InicializaÃ§Ã£o do encoder e buffer
+        encoder = Encoder()
+        buffer = io.BytesIO()
+        output = FileOutput(buffer)
+
+        self.ui.picam2.start_recording(encoder, output)
         time.sleep(5)  # Grava por 5 segundos
         self.ui.picam2.stop_recording()
 
         # Converte o buffer em uma lista de quadros em formato BGR
-        self.buffer.seek(0)  # Retorna ao inÃ­cio do buffer
+        buffer.seek(0)  # Retorna ao inÃ­cio do buffer
 
         # Carrega cada quadro do buffer e remove o canal alfa
-        while self.buffer.tell() < len(self.buffer.getvalue()):
+        while buffer.tell() < len(buffer.getvalue()):
             # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
-            frame_data = self.buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
+            frame_data = buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
             if not frame_data:
                 break
             
@@ -106,8 +108,8 @@ class SuperMainWindow(QDialog):
         print(len(self.frames))
         
         # Esvazia o buffer
-        self.buffer.truncate(0)  # Limpa o conteúdo do buffer
-        self.buffer.seek(0)      # Posiciona o ponteiro no início do buffer
+        #buffer.truncate(0)  # Limpa o conteúdo do buffer
+        #buffer.seek(0)      # Posiciona o ponteiro no início do buffer
 
 
 if __name__ == "__main__":
