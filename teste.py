@@ -39,7 +39,6 @@ while buffer.tell() < len(buffer.getvalue()):
     # Converte o quadro em um array numpy e remove o canal alfa
     frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
     frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
-    print(frame)
     
     frames.append(frame_bgr)  # Armazena o quadro BGR na lista
 

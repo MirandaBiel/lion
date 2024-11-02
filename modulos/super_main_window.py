@@ -6,6 +6,11 @@ from PyQt5 import QtGui, QtWidgets
 import sys
 from collections import deque
 from py_GUIs.main_window import Ui_Dialog
+from picamera2.outputs import FileOutput
+from picamera2.encoders import Encoder
+import numpy as np
+import io
+import time
 
 
 # Importa as classes correspondentes de cada janela da pasta 'modulos'
@@ -33,6 +38,12 @@ class SuperMainWindow(QDialog):
         self.config_window = SuperConfig(self)
         self.foco_window = SuperFoco(self)
         self.results_window = SuperResults(self)
+
+        # Variáveis para captura
+        self.encoder = Encoder()
+        self.buffer = io.BytesIO()
+        self.output = FileOutput(self.buffer)
+        self.frames = []
         
     def start_camera(self):
         # Método para iniciar a câmera
@@ -71,32 +82,32 @@ class SuperMainWindow(QDialog):
         print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
-        # Parametros da captura
-        fs = 30  # Taxa de quadros em Hz
-        ts = 5   # Duracao da captura em segundos
-        n_frames = fs * ts + 10  # NÃºmero total de quadros a capturar
+        self.ui.picam2.start_recording(self.encoder, self.output)
+        time.sleep(5)  # Grava por 5 segundos
+        self.ui.picam2.stop_recording()
 
-        # Cria a fila com tamanho mÃ¡ximo
-        queue = deque(maxlen=n_frames)
-        tempos_de_captura = []
+        # Converte o buffer em uma lista de quadros em formato BGR
+        self.buffer.seek(0)  # Retorna ao inÃ­cio do buffer
 
-        # Captura e armazena os quadros na fila
-        for i in range(n_frames):
-            print(i)
-            [main], metadata = self.ui.picam2.capture_arrays()
-            print(i)
-            tempos_de_captura.append(metadata["SensorTimestamp"])
-            queue.append(main)  # Adiciona o quadro Ã  fila
+        # Carrega cada quadro do buffer e remove o canal alfa
+        while self.buffer.tell() < len(self.buffer.getvalue()):
+            # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
+            frame_data = self.buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
+            if not frame_data:
+                break
+            
+            # Converte o quadro em um array numpy e remove o canal alfa
+            frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
+            frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
+            
+            self.frames.append(frame_bgr)  # Armazena o quadro BGR na lista
 
-            # Calcula e atualiza a porcentagem na progressBar_2
-            progress_percent = int((i + 1) / n_frames * 100)
-            self.ui.progressBar_2.setValue(progress_percent)
-
-        # Calcula os intervalos entre os tempos de captura
-        intervalos = [(((tempos_de_captura[i+1] - tempos_de_captura[i]) * 0.000001) - 33.333)
-                    for i in range(len(tempos_de_captura) - 1)]
-        print("Intervalos entre capturas:", intervalos)
-
+        print("PROCESSO FINALIZADO")
+        print(len(self.frames))
+        
+        # Esvazia o buffer
+        self.buffer.truncate(0)  # Limpa o conteúdo do buffer
+        self.buffer.seek(0)      # Posiciona o ponteiro no início do buffer
 
 
 if __name__ == "__main__":
