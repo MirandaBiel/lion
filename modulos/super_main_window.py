@@ -27,7 +27,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
         self.ui.startButton.clicked.connect(self.caputre)
-        self.ui.qpicamera2.done_signal.connect(self.capture_done, type=QtCore.Qt.QueuedConnection)
+        self.ui.qpicamera2.done_signal.connect(self.capture_done)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -83,8 +83,9 @@ class SuperMainWindow(QDialog):
     def caputre(self):
         self.ui.startButton.setEnabled(False)
 
-        self.cont = 0
-        self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
+        # Captura e armazena os quadros na fila
+        for i in range(self.n_frames):
+            self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
 
     def capture_done(self, job):
         [main], metadata = self.ui.picam2.wait(job)
@@ -105,8 +106,6 @@ class SuperMainWindow(QDialog):
             
             self.ui.startButton.setEnabled(True)
             self.cont = 0
-        else:
-            self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
 
 
 
