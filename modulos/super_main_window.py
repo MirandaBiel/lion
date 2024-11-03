@@ -73,7 +73,7 @@ class SuperMainWindow(QDialog):
         self.results_window.showMaximized()
 
     def config_camera(self):
-        video_config = self.ui.picam2.create_video_configuration(
+        video_config = self.ui.picam2.create_video_configuration(buffer_count=15,
             controls={"FrameDurationLimits": (33333, 33333)},  # Limita para 30 fps
             main={"size": (800, 600)}
         )
@@ -83,9 +83,8 @@ class SuperMainWindow(QDialog):
     def caputre(self):
         self.ui.startButton.setEnabled(False)
 
-        # Captura e armazena os quadros na fila
-        for i in range(self.n_frames):
-            self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
+        self.cont = 0
+        self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
 
     def capture_done(self, job):
         [main], metadata = self.ui.picam2.wait(job)
@@ -106,6 +105,8 @@ class SuperMainWindow(QDialog):
             
             self.ui.startButton.setEnabled(True)
             self.cont = 0
+        else:
+            self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
 
 
 
