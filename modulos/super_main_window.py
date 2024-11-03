@@ -87,14 +87,6 @@ class SuperMainWindow(QDialog):
         for i in range(self.n_frames):
             self.ui.picam2.capture_arrays(signal_function=self.ui.qpicamera2.signal_done)
 
-        # Calcula os intervalos entre os tempos de captura
-        intervalos = [(((self.tempos_de_captura[i+1] - self.tempos_de_captura[i]) * 0.000001) - 33.333)
-                    for i in range(len(self.tempos_de_captura) - 1)]
-        print("Intervalos entre capturas:", intervalos)
-        
-        self.ui.startButton.setEnabled(True)
-        self.cont = 0
-
     def capture_done(self, job):
         [main], metadata = self.ui.picam2.wait(job)
         self.tempos_de_captura.append(metadata["SensorTimestamp"])
@@ -105,6 +97,18 @@ class SuperMainWindow(QDialog):
         progress_percent = int((self.cont + 1) / self.n_frames * 100)
         self.ui.progressBar_2.setValue(progress_percent)
         self.cont = self.cont + 1
+
+        if self.cont >= self.n_frames:
+            # Calcula os intervalos entre os tempos de captura
+            intervalos = [(((self.tempos_de_captura[i+1] - self.tempos_de_captura[i]) * 0.000001) - 33.333)
+                        for i in range(len(self.tempos_de_captura) - 1)]
+            print("Intervalos entre capturas:", intervalos)
+            
+            self.ui.startButton.setEnabled(True)
+            self.cont = 0
+
+
+
 
 
 
