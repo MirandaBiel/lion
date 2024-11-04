@@ -43,11 +43,10 @@ class SuperMainWindow(QDialog):
         # Variáveis para captura
         self.encoder = H264Encoder()
         self.output = FileOutput("video.h264")
-        self.ui.picam2.start_encoder(self.encoder, self.output)
         self.frames = []
 
         # Variáveis das janelas
-        self.tempo_de_captura = 50000 # em milisegundos
+        self.tempo_de_captura = 5000 # em milisegundos
 
         # Timer para parar a gravação após 5 segundos
         self.record_timer = QTimer()

@@ -1,7 +1,7 @@
 import cv2
 
 # Caminho do vídeo
-caminho_video = 'test.h264'  # Substitua pelo caminho do seu vídeo H.264
+caminho_video = 'video.h264'  # Substitua pelo caminho do seu vídeo H.264
 
 # Abre o vídeo
 captura = cv2.VideoCapture(caminho_video)
