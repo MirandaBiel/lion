@@ -7,7 +7,7 @@ import sys
 from collections import deque
 from py_GUIs.main_window import Ui_Dialog
 from picamera2.outputs import FileOutput
-from picamera2.encoders import Encoder
+from picamera2.encoders import H264Encoder
 from PyQt5.QtCore import QTimer
 import numpy as np
 import io
@@ -32,7 +32,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
-        self.ui.startButton.clicked.connect(self.caputre)
+        self.ui.startButton.clicked.connect(self.start_capture)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -41,27 +41,19 @@ class SuperMainWindow(QDialog):
         self.results_window = SuperResults(self)
 
         # Variáveis para captura
-        self.encoder = Encoder()
-        self.buffer = io.BytesIO()
-        self.output = FileOutput(self.buffer)
+        self.encoder = H264Encoder()
+        self.output = FileOutput("video.h264")
+        self.ui.picam2.start_encoder(self.encoder, self.output)
         self.frames = []
+
+        # Variáveis das janelas
+        self.tempo_de_captura = 50000 # em milisegundos
 
         # Timer para parar a gravação após 5 segundos
         self.record_timer = QTimer()
-        self.record_timer.setInterval(5000)  # 5000 ms = 5 segundos
+        self.record_timer.setInterval(self.tempo_de_captura)
         self.record_timer.setSingleShot(True)  # Para disparar apenas uma vez
         self.record_timer.timeout.connect(self.stop_capture)
-        
-    def start_camera(self):
-        # Método para iniciar a câmera
-        if self.ui.picam2 is not None:
-            self.config_camera()
-            self.ui.picam2.start()
-
-    def stop_camera(self):
-        # Método para parar a câmera
-        if self.ui.picam2 is not None:
-            self.ui.picam2.stop()
 
     # Métodos para abrir cada janela
     def open_foco_window(self):
@@ -79,6 +71,18 @@ class SuperMainWindow(QDialog):
     def open_results_window(self):
         self.hide()
         self.results_window.showMaximized()
+    
+    # Métodos de funcionalidades
+    def start_camera(self):
+        # Método para iniciar a câmera
+        if self.ui.picam2 is not None:
+            self.config_camera()
+            self.ui.picam2.start()
+
+    def stop_camera(self):
+        # Método para parar a câmera
+        if self.ui.picam2 is not None:
+            self.ui.picam2.stop()
 
     def config_camera(self):
         video_config = self.ui.picam2.create_video_configuration(
@@ -88,36 +92,12 @@ class SuperMainWindow(QDialog):
         self.ui.picam2.configure(video_config)
         print(self.ui.picam2.camera_configuration())
 
-    def caputre(self):
+    def start_capture(self):
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
 
     def stop_capture(self):
         self.ui.picam2.stop_encoder()
-
-        # Converte o buffer em uma lista de quadros em formato BGR
-        self.buffer.seek(0)  # Retorna ao inÃ­cio do buffer
-
-        # Carrega cada quadro do buffer e remove o canal alfa
-        while self.buffer.tell() < len(self.buffer.getvalue()):
-            # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
-            frame_data = self.buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
-            if not frame_data:
-                break
-            
-            # Converte o quadro em um array numpy e remove o canal alfa
-            frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
-            frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
-            
-            self.frames.append(frame_bgr)  # Armazena o quadro BGR na lista
-
-        print("PROCESSO FINALIZADO")
-        print(len(self.frames))
-        
-        # Esvazia o buffer
-        self.buffer.truncate(0)  # Limpa o conteúdo do buffer
-        self.buffer.seek(0)      # Posiciona o ponteiro no início do buffer
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -127,4 +107,3 @@ if __name__ == "__main__":
     main_window.show()
 
     sys.exit(app.exec_())
-    
