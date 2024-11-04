@@ -41,6 +41,7 @@ class SuperMainWindow(QDialog):
 
         # Variáveis para captura
         self.frames = []
+        self.metadados = []
         self.encoder = H264Encoder(10000000)
         self.buffer = io.BytesIO()
         self.output = FileOutput("test.h264")
@@ -54,7 +55,8 @@ class SuperMainWindow(QDialog):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
-                request.get_metadata()
+                self.frames.append(request.make_array('main'))
+                self.metadados.append(request.get_metadata()["SensorTimestamp"])
                 print('CODIFICADOR PARADO')
             self.cont = self.cont + 1
             print(self.cont)
@@ -97,7 +99,6 @@ class SuperMainWindow(QDialog):
 
     def start_caputre(self):
         self.cont_enable = True
-        self.ui.picam2.start_encoder(self.encoder, self.output)
     
     def stop_capture(self, job):
         self.ui.picam2.stop_encoder()
