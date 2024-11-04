@@ -99,12 +99,6 @@ class SuperMainWindow(QDialog):
 
     def start_caputre(self):
         self.cont_enable = True
-    
-    def stop_capture(self, job):
-        self.ui.picam2.stop_encoder()
-
-
-    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
