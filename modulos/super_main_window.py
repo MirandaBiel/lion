@@ -52,12 +52,16 @@ class SuperMainWindow(QDialog):
 
     def post_callback(self, request):
         if self.cont_enable:
-            if self.cont == 150:
+            if self.cont == 1500:
                 self.cont_enable = False
                 print('CODIFICADOR PARADO')
                 intervalos = [(((self.metadados[i+1] - self.metadados[i]) * 0.000001) - 33.333)
                             for i in range(len(self.metadados) - 1)]
-                print("Intervalos entre capturas:", intervalos)
+                atrasos = []
+                for i in intervalos:
+                    if i > 1:
+                        atrasos.append()
+                print("Atrasos entre capturas:", atrasos)
             self.cont = self.cont + 1
             self.frames.append(request.make_array('main'))
             self.metadados.append(request.get_metadata()["SensorTimestamp"])
