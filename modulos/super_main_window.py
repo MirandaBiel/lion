@@ -1,11 +1,14 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5 import QtGui, QtWidgets
+# from picamera2 import Picamera2
+# from picamera2.previews.qt import QGlPicamera2
 import sys
 from collections import deque
 from py_GUIs.main_window import Ui_Dialog
 from picamera2.outputs import FileOutput
-from picamera2.encoders import H264Encoder
+from picamera2.encoders import Encoder
+from PyQt5.QtCore import QTimer
 import numpy as np
 import io
 import time
@@ -29,8 +32,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
-        self.ui.startButton.clicked.connect(self.start_caputre)
-
+        self.ui.startButton.clicked.connect(self.caputre)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -39,33 +41,17 @@ class SuperMainWindow(QDialog):
         self.results_window = SuperResults(self)
 
         # Variáveis para captura
-        self.frames = []
-        self.metadados = []
-        self.encoder = H264Encoder(10000000)
+        self.encoder = Encoder()
         self.buffer = io.BytesIO()
-        self.output = FileOutput("test.h264")
-        self.cont = 0
-        self.cont_enable = False
+        self.output = FileOutput(self.buffer)
+        self.frames = []
 
-        # Configurações da câmera
-        self.ui.picam2.post_callback = self.post_callback
-
-    def post_callback(self, request):
-        if self.cont_enable:
-            if self.cont == 1500:
-                self.cont_enable = False
-                print('CODIFICADOR PARADO')
-                intervalos = [(((self.metadados[i+1] - self.metadados[i]) * 0.000001) - 33.333)
-                            for i in range(len(self.metadados) - 1)]
-                atrasos = []
-                for i in intervalos:
-                    if i > 1:
-                        atrasos.append()
-                print("Atrasos entre capturas:", atrasos)
-            self.cont = self.cont + 1
-            self.frames.append(request.make_array('main'))
-            self.metadados.append(request.get_metadata()["SensorTimestamp"])
-
+        # Timer para parar a gravação após 5 segundos
+        self.record_timer = QTimer()
+        self.record_timer.setInterval(5000)  # 5000 ms = 5 segundos
+        self.record_timer.setSingleShot(True)  # Para disparar apenas uma vez
+        self.record_timer.timeout.connect(self.stop_capture)
+        
     def start_camera(self):
         # Método para iniciar a câmera
         if self.ui.picam2 is not None:
@@ -102,8 +88,36 @@ class SuperMainWindow(QDialog):
         self.ui.picam2.configure(video_config)
         print(self.ui.picam2.camera_configuration())
 
-    def start_caputre(self):
-        self.cont_enable = True
+    def caputre(self):
+        self.ui.picam2.start_recording(self.encoder, self.output)
+        time.sleep(5)  # Grava por 5 segundos
+
+    def stop_capture(self):
+        self.ui.picam2.stop_recording()
+
+        # Converte o buffer em uma lista de quadros em formato BGR
+        self.buffer.seek(0)  # Retorna ao inÃ­cio do buffer
+
+        # Carrega cada quadro do buffer e remove o canal alfa
+        while self.buffer.tell() < len(self.buffer.getvalue()):
+            # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
+            frame_data = self.buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
+            if not frame_data:
+                break
+            
+            # Converte o quadro em um array numpy e remove o canal alfa
+            frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
+            frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
+            
+            self.frames.append(frame_bgr)  # Armazena o quadro BGR na lista
+
+        print("PROCESSO FINALIZADO")
+        print(len(self.frames))
+        
+        # Esvazia o buffer
+        self.buffer.truncate(0)  # Limpa o conteúdo do buffer
+        self.buffer.seek(0)      # Posiciona o ponteiro no início do buffer
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -113,7 +127,3 @@ if __name__ == "__main__":
     main_window.show()
 
     sys.exit(app.exec_())
-
-# Calcula e atualiza a porcentagem na progressBar_2
-# progress_percent = int((i + 1) / n_frames * 100)
-# self.ui.progressBar_2.setValue(progress_percent)
