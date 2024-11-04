@@ -56,7 +56,9 @@ class SuperMainWindow(QDialog):
             if self.cont == 150:
                 self.cont_enable = False
                 print('CODIFICADOR PARADO')
-                print(self.metadados)
+                intervalos = [(((self.metadados[i+1] - self.metadados[i]) * 0.000001) - 33.333)
+                            for i in range(len(self.metadados) - 1)]
+                print("Intervalos entre capturas:", intervalos)
             self.cont = self.cont + 1
             self.frames.append(request.make_array('main'))
             self.metadados.append(request.get_metadata()["SensorTimestamp"])
@@ -108,3 +110,7 @@ if __name__ == "__main__":
     main_window.show()
 
     sys.exit(app.exec_())
+
+# Calcula e atualiza a porcentagem na progressBar_2
+# progress_percent = int((i + 1) / n_frames * 100)
+# self.ui.progressBar_2.setValue(progress_percent)
