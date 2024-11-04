@@ -55,12 +55,11 @@ class SuperMainWindow(QDialog):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
-                self.frames.append(request.make_array('main'))
-                self.metadados.append(request.get_metadata()["SensorTimestamp"])
                 print('CODIFICADOR PARADO')
+                print(self.metadados)
             self.cont = self.cont + 1
-            print(self.metadados)
-            print(len(self.metadados))
+            self.frames.append(request.make_array('main'))
+            self.metadados.append(request.get_metadata()["SensorTimestamp"])
 
     def start_camera(self):
         # Método para iniciar a câmera
