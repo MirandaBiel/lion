@@ -30,7 +30,6 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
         self.ui.startButton.clicked.connect(self.start_caputre)
-        self.ui.qpicamera2.done_signal.connect(self.stop_capture)
 
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
