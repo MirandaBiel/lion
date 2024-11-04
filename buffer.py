@@ -8,6 +8,7 @@ from picamera2 import Picamera2
 from picamera2.encoders import Encoder
 from picamera2.outputs import FileOutput
 from picamera2.previews.qt import QGlPicamera2
+import io
 
 encoder = Encoder()
 buffer = io.BytesIO()
