@@ -52,7 +52,7 @@ class SuperMainWindow(QDialog):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
-                self.ui.picam2.stop_encoder()
+                self.stop_capture()
                 print('CODIFICADOR PARADO')
             self.cont = self.cont + 1
             print(self.cont)
@@ -93,9 +93,15 @@ class SuperMainWindow(QDialog):
         self.ui.picam2.configure(video_config)
         print(self.ui.picam2.camera_configuration())
 
-    def caputre(self):
+    def start_caputre(self):
         self.cont_enable = True
         self.ui.picam2.start_encoder(self.encoder, self.output)
+    
+    def stop_capture(self):
+        self.ui.picam2.stop_encoder()
+
+
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
