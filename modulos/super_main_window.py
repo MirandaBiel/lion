@@ -90,7 +90,7 @@ class SuperMainWindow(QDialog):
 
     def caputre(self):
         self.ui.picam2.start_recording(self.encoder, self.output)
-        time.sleep(5)  # Grava por 5 segundos
+        self.record_timer.start()
 
     def stop_capture(self):
         self.ui.picam2.stop_recording()
