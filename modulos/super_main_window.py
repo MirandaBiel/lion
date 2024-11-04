@@ -30,6 +30,8 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
         self.ui.startButton.clicked.connect(self.start_caputre)
+        self.ui.qpicamera2.done_signal.connect(self.stop_capture)
+
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -52,7 +54,7 @@ class SuperMainWindow(QDialog):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
-                self.ui.qpicamera2.signal_done()
+                self.ui.qpicamera2.signal_done(job=None)
                 print('CODIFICADOR PARADO')
             self.cont = self.cont + 1
             print(self.cont)
@@ -97,7 +99,7 @@ class SuperMainWindow(QDialog):
         self.cont_enable = True
         self.ui.picam2.start_encoder(self.encoder, self.output)
     
-    def stop_capture(self):
+    def stop_capture(self, job):
         self.ui.picam2.stop_encoder()
 
 
