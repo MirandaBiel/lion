@@ -29,7 +29,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
-        self.ui.startButton.clicked.connect(self.caputre)
+        self.ui.startButton.clicked.connect(self.start_caputre)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
