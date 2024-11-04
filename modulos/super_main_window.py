@@ -89,11 +89,11 @@ class SuperMainWindow(QDialog):
         print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
-        self.ui.picam2.start_recording(self.encoder, self.output)
+        self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
 
     def stop_capture(self):
-        self.ui.picam2.stop_recording()
+        self.ui.picam2.stop_encoder()
 
         # Converte o buffer em uma lista de quadros em formato BGR
         self.buffer.seek(0)  # Retorna ao inÃ­cio do buffer
