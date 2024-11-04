@@ -54,7 +54,7 @@ class SuperMainWindow(QDialog):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
-                self.ui.qpicamera2.signal_done(job=None)
+                request.get_metadata()
                 print('CODIFICADOR PARADO')
             self.cont = self.cont + 1
             print(self.cont)
