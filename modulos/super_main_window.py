@@ -5,7 +5,7 @@ import sys
 from collections import deque
 from py_GUIs.main_window import Ui_Dialog
 from picamera2.outputs import FileOutput
-from picamera2.encoders import Encoder
+from picamera2.encoders import H264Encoder
 import numpy as np
 import io
 import time
@@ -39,9 +39,9 @@ class SuperMainWindow(QDialog):
 
         # Variáveis para captura
         self.frames = []
-        self.encoder = Encoder()
+        self.encoder = H264Encoder(10000000)
         self.buffer = io.BytesIO()
-        self.output = FileOutput(self.buffer)
+        self.output = FileOutput("test.h264")
         self.cont = 0
         self.cont_enable = False
 
@@ -52,9 +52,10 @@ class SuperMainWindow(QDialog):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
-                self.ui.picam2.stop_recording()
-                self.buffer_view()
+                self.ui.picam2.stop_encoder()
+                print('CODIFICADOR PARADO')
             self.cont = self.cont + 1
+            print(self.cont)
 
     def start_camera(self):
         # Método para iniciar a câmera
@@ -93,33 +94,7 @@ class SuperMainWindow(QDialog):
         print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
-        self.ui.picam2.start_recording(self.encoder, self.output)
-
-    def buffer_view(self):
-
-        # Converte o buffer em uma lista de quadros em formato BGR
-        self.buffer.seek(0)  # Retorna ao inÃ­cio do buffer
-
-        # Carrega cada quadro do buffer e remove o canal alfa
-        while self.buffer.tell() < len(self.buffer.getvalue()):
-            # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
-            frame_data = self.buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
-            if not frame_data:
-                break
-            
-            # Converte o quadro em um array numpy e remove o canal alfa
-            frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
-            frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
-            
-            self.frames.append(frame_bgr)  # Armazena o quadro BGR na lista
-
-        print("PROCESSO FINALIZADO")
-        print(len(self.frames))
-        
-        # Esvazia o buffer
-        self.buffer.truncate(0)  # Limpa o conteúdo do buffer
-        self.buffer.seek(0)      # Posiciona o ponteiro no início do buffer
-
+        self.ui.picam2.start_encoder(self.encoder, self.output)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

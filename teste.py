@@ -1,54 +1,59 @@
-from picamera2.outputs import FileOutput
-from picamera2.encoders import Encoder
+#!/usr/bin/python3
+
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QLabel, QPushButton,
+                             QVBoxLayout, QWidget)
+
 from picamera2 import Picamera2
-from PyQt5 import QtCore, QtGui, QtWidgets
-import io
-import time
-import numpy as np
-import cv2  # Usado para manipular os dados de imagem
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FileOutput
+from picamera2.previews.qt import QGlPicamera2
 
-# ConfiguraÃ§Ã£o da cÃ¢mera
+
+def post_callback(request):
+    label.setText(''.join(f"{k}: {v}\n" for k, v in request.get_metadata().items()))
+
+
 picam2 = Picamera2()
-video_config = picam2.create_video_configuration(
-    controls={"FrameDurationLimits": (33333, 33333)},  # Limita para 30 fps
-    main={'format': 'XBGR8888', "size": (800, 600)}
-)
-picam2.configure(video_config)
+picam2.post_callback = post_callback
+picam2.configure(picam2.create_video_configuration(main={"size": (1280, 720)}))
 
-# InicializaÃ§Ã£o do encoder e buffer
-encoder = Encoder()
-buffer = io.BytesIO()
-output = FileOutput(buffer)
+app = QApplication([])
 
-# Inicia a gravaÃ§Ã£o
-picam2.start_recording(encoder, output)
-time.sleep(5)  # Grava por 5 segundos
-picam2.stop_recording()
 
-# Converte o buffer em uma lista de quadros em formato BGR
-frames = []
-buffer.seek(0)  # Retorna ao inÃ­cio do buffer
+def on_button_clicked():
+    global recording
+    if not recording:
+        encoder = H264Encoder(10000000)
+        output = FileOutput("test.h264")
+        picam2.start_encoder(encoder, output)
+        button.setText("Stop recording")
+        recording = True
+    else:
+        picam2.stop_encoder()
+        button.setText("Start recording")
+        recording = False
 
-# Carrega cada quadro do buffer e remove o canal alfa
-while buffer.tell() < len(buffer.getvalue()):
-    # Supondo que cada quadro Ã© um array com 800x600 de resoluÃ§Ã£o e canal extra (4 bytes por pixel para XBGR8888)
-    frame_data = buffer.read(800 * 600 * 4)  # LÃª cada quadro com os 4 canais (XBGR)
-    if not frame_data:
-        break
-    
-    # Converte o quadro em um array numpy e remove o canal alfa
-    frame = np.frombuffer(frame_data, dtype=np.uint8).reshape((600, 800, 4))  # Formato (H, W, 4)
-    frame_bgr = frame[:, :, :3]  # Remove o canal alfa 'X'
-    
-    frames.append(frame_bgr)  # Armazena o quadro BGR na lista
 
-print("PROCESSO FINALIZADO")
-print(f"Total de quadros capturados: {len(frames)}")
+qpicamera2 = QGlPicamera2(picam2, width=800, height=480, keep_ar=False)
+button = QPushButton("Start recording")
+button.clicked.connect(on_button_clicked)
+label = QLabel()
+window = QWidget()
+window.setWindowTitle("Qt Picamera2 App")
+recording = False
 
-# Mostra cada quadro extraÃ­do
-for i, frame_bgr in enumerate(frames):
-    cv2.imshow("Frame", frame_bgr)
-    if cv2.waitKey(30) & 0xFF == ord('q'):  # Pressione 'q' para sair
-        break
+label.setFixedWidth(400)
+label.setAlignment(QtCore.Qt.AlignTop)
+layout_h = QHBoxLayout()
+layout_v = QVBoxLayout()
+layout_v.addWidget(label)
+layout_v.addWidget(button)
+layout_h.addWidget(qpicamera2, 80)
+layout_h.addLayout(layout_v, 20)
+window.resize(1200, 480)
+window.setLayout(layout_h)
 
-cv2.destroyAllWindows()
+picam2.start()
+window.show()
+app.exec()
