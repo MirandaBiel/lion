@@ -48,7 +48,7 @@ class SuperMainWindow(QDialog):
         # Configurações da câmera
         self.ui.picam2.post_callback = self.post_callback
 
-    def post_callback(self):
+    def post_callback(self, request):
         if self.cont_enable:
             if self.cont == 150:
                 self.cont_enable = False
