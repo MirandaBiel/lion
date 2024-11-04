@@ -94,6 +94,7 @@ class SuperMainWindow(QDialog):
         print(self.ui.picam2.camera_configuration())
 
     def caputre(self):
+        self.cont_enable = True
         self.ui.picam2.start_encoder(self.encoder, self.output)
 
 if __name__ == "__main__":
