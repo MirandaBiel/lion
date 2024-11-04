@@ -59,7 +59,8 @@ class SuperMainWindow(QDialog):
                 self.metadados.append(request.get_metadata()["SensorTimestamp"])
                 print('CODIFICADOR PARADO')
             self.cont = self.cont + 1
-            print(self.cont)
+            print(self.metadados)
+            print(len(self.metadados))
 
     def start_camera(self):
         # Método para iniciar a câmera
