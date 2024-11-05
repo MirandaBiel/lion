@@ -18,6 +18,11 @@ class SuperConfig(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
+
+        # Define os checkboxes selecionados inicialmente
+        self.ui.checkBox_151.setChecked(True)
+        self.ui.checkBox_101.setChecked(True)
+        self.ui.checkBox_330.setChecked(True)
         
     def voltar(self):
         self.main_window.landmarks = []
