@@ -48,7 +48,9 @@ class SuperMainWindow(QDialog):
         # Variáveis das janelas
         self.tempo_de_captura = 5000 # em milisegundos
         self.fps = 30
+        self.frame_duration = int(100000 / self.fps)
         self.size = (800, 600)
+        self.landmarks = []
 
         # Timer para parar a gravação após 5 segundos
         self.record_timer = QTimer()
@@ -87,7 +89,7 @@ class SuperMainWindow(QDialog):
 
     def config_camera(self):
         video_config = self.ui.picam2.create_video_configuration(
-            controls={"FrameDurationLimits": (33333, 33333)},  # Limita para 30 fps
+            controls={"FrameDurationLimits": (self.frame_duration, self.frame_duration)},
             main={"size": self.size}
         )
         self.ui.picam2.configure(video_config)
@@ -99,6 +101,14 @@ class SuperMainWindow(QDialog):
 
     def stop_capture(self):
         self.ui.picam2.stop_encoder()
+    
+    def mostra_variaveis(self):
+        print("Landmarks")
+        print(self.landmarks)
+        print("Frame Duration")
+        print(self.frame_duration)
+        print("size")
+        print(self.size)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

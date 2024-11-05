@@ -12,7 +12,7 @@ class SuperConfig(QDialog):
         super(SuperConfig, self).__init__(*args, **kwargs)
 
         # Guarda a referência da janela principal
-        self.main_window = main_window
+        self.self.main_window = main_window
         
         # Inicializa a interface gerada pelo Qt Designer
         self.ui = Ui_Dialog()
@@ -20,8 +20,63 @@ class SuperConfig(QDialog):
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
         
     def voltar(self):
+        if self.ui.checkBox_10:
+            self.main_window.landmarks.append(10)
+        if self.ui.checkBox_101:
+            self.main_window.landmarks.append(101)
+        if self.ui.checkBox_104:
+            self.main_window.landmarks.append(104)
+        if self.ui.checkBox_107:
+            self.main_window.landmarks.append(107)
+        if self.ui.checkBox_108:
+            self.main_window.landmarks.append(108)
+        if self.ui.checkBox_109:
+            self.main_window.landmarks.append(109)
+        if self.ui.checkBox_135:
+            self.main_window.landmarks.append(135)
+        if self.ui.checkBox_151:
+            self.main_window.landmarks.append(151)
+        if self.ui.checkBox_18:
+            self.main_window.landmarks.append(18)
+        if self.ui.checkBox_188:
+            self.main_window.landmarks.append(188)
+        if self.ui.checkBox_199:
+            self.main_window.landmarks.append(199)
+        if self.ui.checkBox_266:
+            self.main_window.landmarks.append(266)
+        if self.ui.checkBox_280:
+            self.main_window.landmarks.append(280)
+        if self.ui.checkBox_299:
+            self.main_window.landmarks.append(299)
+        if self.ui.checkBox_330:
+            self.main_window.landmarks.append(330)
+        if self.ui.checkBox_333:
+            self.main_window.landmarks.append(333)
+        if self.ui.checkBox_36:
+            self.main_window.landmarks.append(36)
+        if self.ui.checkBox_364:
+            self.main_window.landmarks.append(364)
+        if self.ui.checkBox_336:
+            self.main_window.landmarks.append(336)
+        if self.ui.checkBox_337:
+            self.main_window.landmarks.append(337)
+        if self.ui.checkBox_9:
+            self.main_window.landmarks.append(9)
+        if self.ui.checkBox_6:
+            self.main_window.landmarks.append(6)
+        if self.ui.checkBox_338:
+            self.main_window.landmarks.append(338)
+        if self.ui.checkBox_347:
+            self.main_window.landmarks.append(347)
+        if self.ui.checkBox_69:
+            self.main_window.landmarks.append(69)
+        if self.ui.checkBox_4:
+            self.main_window.landmarks.append(4)
+        if self.ui.checkBox_50:
+            self.main_window.landmarks.append(50)
+
         self.hide()  # Oculta a janela, mantendo os dados
-        self.main_window.show()  # Exibe a janela principal novamente
+        self.self.main_window.show()  # Exibe a janela principal novamente
 
         
 
