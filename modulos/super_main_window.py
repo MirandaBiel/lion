@@ -132,7 +132,7 @@ class SuperMainWindow(QDialog):
         else:
             progress_value = int((self.elapsed_time / self.progress_duration) * 100)
 
-        self.ui.progressBar2.setValue(progress_value)
+        self.ui.progressBar_2.setValue(progress_value)
     
     def mostra_variaveis(self):
         print("Landmarks")
