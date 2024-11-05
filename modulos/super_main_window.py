@@ -48,9 +48,10 @@ class SuperMainWindow(QDialog):
         # Variáveis das janelas
         self.tempo_de_captura = 5000 # em milisegundos
         self.fps = 30
-        self.frame_duration = int(100000 / self.fps)
+        self.frame_duration = int(1000000 / self.fps)
         self.size = (800, 600)
         self.landmarks = [151, 101, 330]
+        self.landmarks_gain = 1
 
         # Timer para parar a gravação após 5 segundos
         self.record_timer = QTimer()
@@ -107,8 +108,10 @@ class SuperMainWindow(QDialog):
         print(self.landmarks)
         print("Frame Duration")
         print(self.frame_duration)
-        print("size")
-        print(self.size)
+        #print("size")
+        #print(self.size)
+        print('landmarks gain')
+        print(self.landmarks_gain)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -25,6 +25,7 @@ class SuperConfig(QDialog):
         self.ui.checkBox_330.setChecked(True)
         
     def voltar(self):
+        self.main_window.landmarks_gain = self.ui.horizontalSlider_patches_size.value()
         self.main_window.landmarks = []
         if self.ui.checkBox_10.isChecked():
             self.main_window.landmarks.append(10)
