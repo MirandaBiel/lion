@@ -76,7 +76,7 @@ class SuperConfig(QDialog):
             self.main_window.landmarks.append(50)
 
         self.hide()  # Oculta a janela, mantendo os dados
-        self.self.main_window.show()  # Exibe a janela principal novamente
+        self.main_window.show()  # Exibe a janela principal novamente
 
         
 
