@@ -61,6 +61,15 @@ class SuperMainWindow(QDialog):
         self.record_timer.setSingleShot(True)  # Para disparar apenas uma vez
         self.record_timer.timeout.connect(self.stop_capture)
 
+        # Configurações da câmera
+        self.ui.picam2.post_callback = self.post_callback
+        self.cont = 0
+        self.cont_enable = False
+
+    def post_callback(self, request):
+        if self.cont_enable:
+            self.cont = self.cont + 1
+
     # Métodos para abrir cada janela
     def open_foco_window(self):
         self.hide()
@@ -101,9 +110,12 @@ class SuperMainWindow(QDialog):
     def start_capture(self):
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
+        self.cont_enable = True
 
     def stop_capture(self):
         self.ui.picam2.stop_encoder()
+        self.cont_enable = False
+        print(f'Frames capturados: {self.cont}')
     
     def mostra_variaveis(self):
         print("Landmarks")

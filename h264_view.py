@@ -5,6 +5,7 @@ caminho_video = 'video.h264'  # Substitua pelo caminho do seu vídeo H.264
 
 # Abre o vídeo
 captura = cv2.VideoCapture(caminho_video)
+cont = 0
 
 # Verifica se o vídeo foi aberto corretamente
 if not captura.isOpened():
@@ -22,11 +23,13 @@ else:
         
         # Processamento específico: neste caso, exibir o frame
         cv2.imshow('Frame', frame)
+        cont = cont + 1
         
         # Aguarda uma tecla por 25 ms. Pressione 'q' para sair do loop
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
+print(f'Frames capturados: {cont}')
 # Libera o objeto de captura e fecha a janela
 captura.release()
 cv2.destroyAllWindows()
