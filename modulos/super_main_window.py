@@ -57,7 +57,7 @@ class SuperMainWindow(QDialog):
 
         # Timer para parar a gravação
         self.record_timer = QTimer()
-        self.record_timer.setInterval(self.tempo_de_captura / 10)
+        self.record_timer.setInterval(int(self.tempo_de_captura / 10))
         self.record_timer.timeout.connect(self.update_progress)
         self.elapsed_time = 0
 
