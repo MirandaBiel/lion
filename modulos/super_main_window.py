@@ -59,7 +59,7 @@ class SuperMainWindow(QDialog):
         self.record_timer = QTimer()
         self.record_timer.setInterval(self.tempo_de_captura)
         self.record_timer.setSingleShot(True)  # Para disparar apenas uma vez
-        self.record_timer.timeout.connect(self.stop_capture)
+        self.record_timer.timeout.connect(self.start_capture)
 
         # Configurações da câmera
         self.ui.picam2.post_callback = self.post_callback
