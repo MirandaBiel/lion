@@ -55,11 +55,11 @@ class SuperMainWindow(QDialog):
         self.method = 'GBGR'
         self.analysis = 'espectral'
 
-        # Timer para parar a gravação após 5 segundos
+        # Timer para parar a gravação
         self.record_timer = QTimer()
-        self.record_timer.setInterval(self.tempo_de_captura)
-        self.record_timer.setSingleShot(True)  # Para disparar apenas uma vez
-        self.record_timer.timeout.connect(self.stop_capture)
+        self.record_timer.setInterval(self.tempo_de_captura / 10)
+        self.record_timer.timeout.connect(self.update_progress)
+        self.elapsed_time = 0
 
         # Configurações da câmera
         self.ui.picam2.post_callback = self.post_callback
@@ -119,6 +119,20 @@ class SuperMainWindow(QDialog):
         self.cont_enable = False
         self.frames_capturados = self.cont
         self.cont = 0
+        print(f'Frames capturados: {self.frames_capturados}')
+
+    def update_progress(self):
+        # Atualiza o tempo decorrido e a barra de progresso
+        self.elapsed_time += 100  # Incrementa em 100 ms
+        if self.elapsed_time >= self.tempo_de_captura:
+            self.stop_capture()
+            self.elapsed_time = 0
+            progress_value = 100
+            self.record_timer.stop()
+        else:
+            progress_value = int((self.elapsed_time / self.progress_duration) * 100)
+
+        self.ui.progressBar2.setValue(progress_value)
     
     def mostra_variaveis(self):
         print("Landmarks")
