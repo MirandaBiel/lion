@@ -12,7 +12,7 @@ class SuperConfig(QDialog):
         super(SuperConfig, self).__init__(*args, **kwargs)
 
         # Guarda a referência da janela principal
-        self.self.main_window = main_window
+        self.main_window = main_window
         
         # Inicializa a interface gerada pelo Qt Designer
         self.ui = Ui_Dialog()
