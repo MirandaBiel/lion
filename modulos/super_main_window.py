@@ -64,6 +64,8 @@ class SuperMainWindow(QDialog):
         # Configurações da câmera
         self.ui.picam2.post_callback = self.post_callback
         self.cont = 0
+        self.frames_capturados = 0
+        self.frames_gravados = 0
         self.cont_enable = False
 
     def post_callback(self, request):
@@ -115,7 +117,8 @@ class SuperMainWindow(QDialog):
     def stop_capture(self):
         self.ui.picam2.stop_encoder()
         self.cont_enable = False
-        print(f'Frames capturados: {self.cont}')
+        self.frames_capturados = self.cont
+        self.cont = 0
     
     def mostra_variaveis(self):
         print("Landmarks")
