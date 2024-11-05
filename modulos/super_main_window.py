@@ -52,6 +52,8 @@ class SuperMainWindow(QDialog):
         self.size = (800, 600)
         self.landmarks = [151, 101, 330]
         self.landmarks_gain = 1
+        self.method = 'GBGR'
+        self.analysis = 'espectral'
 
         # Timer para parar a gravação após 5 segundos
         self.record_timer = QTimer()
@@ -106,12 +108,18 @@ class SuperMainWindow(QDialog):
     def mostra_variaveis(self):
         print("Landmarks")
         print(self.landmarks)
-        print("Frame Duration")
-        print(self.frame_duration)
+        #print("Frame Duration")
+        #print(self.frame_duration)
         #print("size")
         #print(self.size)
         print('landmarks gain')
         print(self.landmarks_gain)
+        print('metodo')
+        print(self.method)
+        print('analysis')
+        print(self.analysis)
+        print('fps')
+        print(self.fps)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

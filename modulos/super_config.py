@@ -23,9 +23,21 @@ class SuperConfig(QDialog):
         self.ui.checkBox_151.setChecked(True)
         self.ui.checkBox_101.setChecked(True)
         self.ui.checkBox_330.setChecked(True)
+
+
+        self.ui.comboBox_metodo
+        self.ui.radioButton_espectro
+        self.ui.radioButton_picos
+        self.ui.spinBox_fs
         
     def voltar(self):
-        self.main_window.landmarks_gain = self.ui.horizontalSlider_patches_size.value()
+        if self.ui.radioButton_espectro.isChecked():
+            self.main_window.analysis = 'espectral'
+        else:
+            self.main_window.analysis = 'peaks'
+        self.main_window.fps = self.ui.spinBox_fs.value()
+        self.main_window.method = self.ui.comboBox_metodo.currentText()
+        self.main_window.landmarks_gain = self.ui.horizontalSlider_patches_size.value() / 10
         self.main_window.landmarks = []
         if self.ui.checkBox_10.isChecked():
             self.main_window.landmarks.append(10)
