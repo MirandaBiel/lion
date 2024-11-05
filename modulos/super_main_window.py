@@ -130,7 +130,7 @@ class SuperMainWindow(QDialog):
             progress_value = 100
             self.record_timer.stop()
         else:
-            progress_value = int((self.elapsed_time / self.progress_duration) * 100)
+            progress_value = int((self.elapsed_time / self.tempo_de_captura) * 100)
 
         self.ui.progressBar_2.setValue(progress_value)
     
