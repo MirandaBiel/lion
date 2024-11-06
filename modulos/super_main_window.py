@@ -42,7 +42,7 @@ class SuperMainWindow(QDialog):
 
         # Variáveis para captura
         self.encoder = H264Encoder()
-        self.output = FileOutput("video.h264")
+        self.output = FileOutput("video_face_4.h264")
         self.frames = []
 
         # Variáveis das janelas
@@ -114,7 +114,7 @@ class SuperMainWindow(QDialog):
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
         self.cont_enable = True
-        self.ui.label_informativo_2.setText('Realizando captura...')
+        self.ui.label_comunicacao_2.setText('Realizando captura...')
 
     def stop_capture(self):
         self.ui.picam2.stop_encoder()
