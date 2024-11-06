@@ -46,7 +46,7 @@ class SuperMainWindow(QDialog):
         self.frames = []
 
         # Variáveis das janelas
-        self.tempo_de_captura = 5000 # em milisegundos
+        self.tempo_de_captura = 30000 # em milisegundos
         self.fps = 30
         self.frame_duration = int(1000000 / self.fps)
         self.size = (800, 600)
