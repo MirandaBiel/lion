@@ -57,7 +57,8 @@ class SuperMainWindow(QDialog):
 
         # Timer para parar a gravação
         self.record_timer = QTimer()
-        self.record_timer.setInterval(int(self.tempo_de_captura / 10))
+        self.timer_interval = int(self.tempo_de_captura / 10)
+        self.record_timer.setInterval(self.timer_interval)
         self.record_timer.timeout.connect(self.update_progress)
         self.elapsed_time = 0
 
@@ -113,6 +114,7 @@ class SuperMainWindow(QDialog):
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
         self.cont_enable = True
+        self.ui.label_informativo_2.setText('Realizando captura...')
 
     def stop_capture(self):
         self.ui.picam2.stop_encoder()
@@ -123,7 +125,7 @@ class SuperMainWindow(QDialog):
 
     def update_progress(self):
         # Atualiza o tempo decorrido e a barra de progresso
-        self.elapsed_time += 100  # Incrementa em 100 ms
+        self.elapsed_time += self.timer_interval
         if self.elapsed_time >= self.tempo_de_captura:
             self.stop_capture()
             self.elapsed_time = 0
