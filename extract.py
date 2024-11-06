@@ -1,3 +1,4 @@
+import mediapipe as mp
 import cv2
 
 # Caminho do vídeo
