@@ -144,15 +144,20 @@ bvp_green = rppg.GREEN(rppg_channels)
 bvp_lgi = rppg.LGI(rppg_channels)
 bvp_pos = rppg.POS(rppg_channels, fps=fs)
 bvp_gbgr = rppg.GBGR(rppg_channels)
+bvp_ica = rppg.ICA(rppg_channels, component='second_comp')
+#bvp_omit = rppg.OMIT(rppg_channels)
+#bvp_pbv = rppg.PBV(rppg_channels)
+#bvp_pca = rppg.PCA(rppg_channels)
+#bvp_ssr = rppg.SSR(rppg_channels)
 
 # Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_gbgr, bvp_lgi, bvp_pos]
+bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica]
 
 # Analisa os formatos de retorno
 for i in bvp_signals:
     print(f'Shape: {i.shape}')
 
-labels = ['CHROM', 'GBGR', 'LGI', 'POS']
+labels = ['CHROM', 'GREEN', 'LGI', 'POS', 'GBGR', 'ICA']
 
 # Plotar os sinais BVP extraídos
 plot_bvp_signals_separately(bvp_signals, labels, fs)
