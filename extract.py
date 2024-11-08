@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 import math
 import cv2
+import rPPG_Methods as rppg
 
 # Parâmetros
 patches = [151, 101, 330]  # Regiões de interesse
@@ -14,6 +15,21 @@ face_mesh = mp.solutions.face_mesh.FaceMesh(
 fs = 30  # Frequência de amostragem (Hz)
 num_estimators = 1
 rppg_channels = []
+
+def plot_bvp_signals_separately(bvp_signals, labels, fs):
+    """Plota os sinais BVP em janelas separadas."""
+    num_frames = bvp_signals[0].shape[1]
+    time = np.linspace(0, num_frames / fs, num_frames)
+
+    for bvp, label in zip(bvp_signals, labels):
+        plt.figure(figsize=(10, 6))
+        plt.plot(time, bvp[0], label=label)
+        plt.title(f'Sinal BVP - Método: {label}')
+        plt.xlabel('Tempo (s)')
+        plt.ylabel('Amplitude')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
 def processa_um_frame(frame):
     """Processa um único frame para extrair as médias RGB dos patches de interesse."""
@@ -66,7 +82,7 @@ def plot_rppg_signal(rppg_data, fs):
     plt.show()
 
 # Caminho do vídeo
-caminho_video = 'video_face_1.h264'  # Substitua pelo caminho do seu vídeo H.264
+caminho_video = 'video_face_4.h264'  # Substitua pelo caminho do seu vídeo H.264
 
 # Abre o vídeo
 captura = cv2.VideoCapture(caminho_video)
@@ -100,3 +116,18 @@ rppg_channels = np.expand_dims(rppg_channels, axis=0)
 
 # Mostra o gráfico das capturas no tempo
 plot_rppg_signal(rppg_channels, fs)
+
+# Aplicar métodos rPPG
+bvp_chrom = rppg.CHROM(rppg_channels)
+bvp_green = rppg.GREEN(rppg_channels)
+bvp_lgi = rppg.LGI(rppg_channels)
+bvp_pos = rppg.POS(rppg_channels, fps=30)
+
+# Lista de sinais e seus rótulos
+bvp_signals = [bvp_chrom, bvp_lgi, bvp_pos]
+labels = ['CHROM', 'LGI', 'POS']
+
+for bvp in bvp_signals:
+    print(bvp.shape)
+# Plotar os sinais BVP extraídos em janelas separadas
+plot_bvp_signals_separately(bvp_signals, labels, fs)
