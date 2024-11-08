@@ -148,10 +148,9 @@ bvp_ica = rppg.ICA(rppg_channels, component='second_comp')
 bvp_omit = rppg.OMIT(rppg_channels)
 bvp_pbv = rppg.PBV(rppg_channels)
 bvp_pca = rppg.PCA(rppg_channels, component='second_comp')
-bvp_ssr = rppg.SSR(rppg_channels, fps=30)
 
 # Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca, bvp_ssr]
+bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca]
 
 # Analisa os formatos de retorno
 for i in bvp_signals:
