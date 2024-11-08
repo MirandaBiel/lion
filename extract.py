@@ -100,7 +100,6 @@ def plot_rppg_signal(rppg_data, fs):
         plt.grid(True)
         plt.show()
 
-
 # Caminho do vídeo
 caminho_video = 'video_face_4.h264'
 
