@@ -265,27 +265,25 @@ def jadeR(X, m=None, verbose=True):
 
 def GBGR(signal):
     """
-    Calcula o sinal rPPG usando a fórmula baseada nas médias dos canais RGB.
+    Calcula o sinal rPPG usando a fórmula baseada nas médias dos canais RGB para múltiplos patches.
     
     Parâmetros:
-    - signal: numpy array com formato [1, 3, num_frames]
+    - signal: numpy array com formato [n_patches, 3, n_frames]
     
     Retorna:
-    - bvp: numpy array contendo o sinal BVP ao longo do tempo
+    - bvp: numpy array contendo o sinal BVP ao longo do tempo para cada patch
+           (formato [n_patches, num_frames])
     """
-    # Verifica se o sinal está no formato esperado
-    if signal.shape[0] != 1 or signal.shape[1] != 3:
-        raise ValueError(f"Formato inesperado de entrada: {signal.shape}. Esperado [1, 3, num_frames]")
     
     # Extrai os canais R, G, B
-    red_channel = signal[:, 0, :]
-    green_channel = signal[:, 1, :]
-    blue_channel = signal[:, 2, :]
+    red_channel = signal[:, 0, :]   # Formato: [n_patches, num_frames]
+    green_channel = signal[:, 1, :] # Formato: [n_patches, num_frames]
+    blue_channel = signal[:, 2, :]  # Formato: [n_patches, num_frames]
     
-    # Calcula o sinal BVP ao longo do tempo
+    # Calcula o sinal BVP para cada patch ao longo do tempo
     bvp = (green_channel / red_channel) + (green_channel / blue_channel)
     
-    return bvp
+    return bvp  # Retorna no formato [n_patches, num_frames]
 
 def CHROM(signal):
     """
