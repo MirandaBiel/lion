@@ -123,6 +123,11 @@ bvp_green = rppg.GREEN(rppg_channels)
 bvp_lgi = rppg.LGI(rppg_channels)
 bvp_pos = rppg.POS(rppg_channels, fps=30)
 bvp_gbgr = rppg.GBGR(rppg_channels)
+bvp_ica = rppg.ICA(rppg_channels)
+bvp_omit = rppg.OMIT(rppg_channels)
+bvp_pbv = rppg.PBV(rppg_channels)
+bvp_pca = rppg.PCA(rppg_channels)
+bvp_ssr = rppg.SSR(rppg_channels)
 
 # Lista de sinais e seus rótulos
 bvp_signals = [bvp_chrom, bvp_gbgr, bvp_lgi, bvp_pos]

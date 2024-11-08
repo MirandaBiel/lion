@@ -304,7 +304,6 @@ def CHROM(signal):
     bvp = Xcomp - np.multiply(alpha, Ycomp)
     return bvp
 
-
 def LGI(signal):
     """
     LGI method on CPU using Numpy.
@@ -321,7 +320,6 @@ def LGI(signal):
     Y = np.matmul(P, X)
     bvp = Y[:, 1, :]
     return bvp
-
 
 def POS(signal, **kargs):
     """
@@ -370,7 +368,6 @@ def POS(signal, **kargs):
 
     return H
 
-
 def PBV(signal):
     """
     PBV method on CPU using Numpy.
@@ -397,7 +394,6 @@ def PBV(signal):
     bvp = A / B
     return bvp.squeeze(axis=2)
 
-
 def PCA(signal,**kargs):
     """
     PCA method on CPU using Numpy.
@@ -421,7 +417,6 @@ def PCA(signal,**kargs):
     bvp = np.array(bvp)
     return bvp
 
-
 def GREEN(signal):
     """
     GREEN method on CPU using Numpy
@@ -429,7 +424,6 @@ def GREEN(signal):
     Verkruysse, W., Svaasand, L. O., & Nelson, J. S. (2008). Remote plethysmographic imaging using ambient light. Optics express, 16(26), 21434-21445.
     """
     return signal[:, 1, :]
-
 
 def OMIT(signal):
     """
@@ -448,7 +442,6 @@ def OMIT(signal):
         bvp.append(Y[1, :])
     bvp = np.array(bvp)
     return bvp
-
 
 def ICA(signal, **kargs):
     """
@@ -473,7 +466,6 @@ def ICA(signal, **kargs):
     
     # collect
     return bvp
-
 
 def SSR(raw_signal,**kargs):
     """
