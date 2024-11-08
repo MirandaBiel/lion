@@ -1,3 +1,4 @@
+from sklearn.decomposition import PCA as SklearnPCA
 import math
 import time
 import numpy as np
@@ -403,7 +404,7 @@ def PCA(signal,**kargs):
     bvp = []
     for i in range(signal.shape[0]):
         X = signal[i]
-        pca = PCA(n_components=3)
+        pca = SklearnPCA(n_components=3)
         pca.fit(X)
 
         # selector
