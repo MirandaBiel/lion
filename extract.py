@@ -101,7 +101,7 @@ def plot_rppg_signal(rppg_data, fs):
         plt.show()
 
 # Caminho do vídeo
-caminho_video = 'video_face_4.h264'
+caminho_video = 'video_face_1.h264'
 
 # Lista para armazenar os valores RGB
 rppg_channels = []
@@ -145,19 +145,19 @@ bvp_lgi = rppg.LGI(rppg_channels)
 bvp_pos = rppg.POS(rppg_channels, fps=fs)
 bvp_gbgr = rppg.GBGR(rppg_channels)
 bvp_ica = rppg.ICA(rppg_channels, component='second_comp')
-#bvp_omit = rppg.OMIT(rppg_channels)
-#bvp_pbv = rppg.PBV(rppg_channels)
-#bvp_pca = rppg.PCA(rppg_channels)
-#bvp_ssr = rppg.SSR(rppg_channels)
+bvp_omit = rppg.OMIT(rppg_channels)
+bvp_pbv = rppg.PBV(rppg_channels)
+bvp_pca = rppg.PCA(rppg_channels, component='second_comp')
+bvp_ssr = rppg.SSR(rppg_channels, fps=30)
 
 # Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica]
+bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca, bvp_ssr]
 
 # Analisa os formatos de retorno
 for i in bvp_signals:
     print(f'Shape: {i.shape}')
 
-labels = ['CHROM', 'GREEN', 'LGI', 'POS', 'GBGR', 'ICA']
+labels = ['CHROM', 'GREEN', 'LGI', 'POS', 'GBGR', 'ICA', 'OMIT', 'PBV', 'PCA', 'SSR']
 
 # Plotar os sinais BVP extraídos
 plot_bvp_signals_separately(bvp_signals, labels, fs)
