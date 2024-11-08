@@ -122,10 +122,11 @@ bvp_chrom = rppg.CHROM(rppg_channels)
 bvp_green = rppg.GREEN(rppg_channels)
 bvp_lgi = rppg.LGI(rppg_channels)
 bvp_pos = rppg.POS(rppg_channels, fps=30)
+bvp_gbgr = rppg.GBGR(rppg_channels)
 
 # Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos]
-labels = ['CHROM', 'GREEN', 'LGI', 'POS']
+bvp_signals = [bvp_chrom, bvp_gbgr, bvp_lgi, bvp_pos]
+labels = ['CHROM', 'GBGR', 'LGI', 'POS']
 
 for bvp in bvp_signals:
     print(bvp.shape)

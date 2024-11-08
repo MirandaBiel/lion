@@ -264,15 +264,28 @@ def jadeR(X, m=None, verbose=True):
     return B.astype(origtype)
 
 def GBGR(signal):
-    rppg = []
-    for i in signal:
-        mean_red = np.mean(i[:, :, 0])
-        mean_green = np.mean(i[:, :, 1])
-        mean_blue = np.mean(i[:, :, 2])
-        rppg.append(mean_green/mean_red + mean_green/mean_blue)
+    """
+    Calcula o sinal rPPG usando a fórmula baseada nas médias dos canais RGB.
     
-    return rppg 
-
+    Parâmetros:
+    - signal: numpy array com formato [1, 3, num_frames]
+    
+    Retorna:
+    - bvp: numpy array contendo o sinal BVP ao longo do tempo
+    """
+    # Verifica se o sinal está no formato esperado
+    if signal.shape[0] != 1 or signal.shape[1] != 3:
+        raise ValueError(f"Formato inesperado de entrada: {signal.shape}. Esperado [1, 3, num_frames]")
+    
+    # Extrai os canais R, G, B
+    red_channel = signal[:, 0, :]
+    green_channel = signal[:, 1, :]
+    blue_channel = signal[:, 2, :]
+    
+    # Calcula o sinal BVP ao longo do tempo
+    bvp = (green_channel / red_channel) + (green_channel / blue_channel)
+    
+    return bvp
 
 def CHROM(signal):
     """
