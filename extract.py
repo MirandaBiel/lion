@@ -124,8 +124,8 @@ bvp_lgi = rppg.LGI(rppg_channels)
 bvp_pos = rppg.POS(rppg_channels, fps=30)
 
 # Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_lgi, bvp_pos]
-labels = ['CHROM', 'LGI', 'POS']
+bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos]
+labels = ['CHROM', 'GREEN', 'LGI', 'POS']
 
 for bvp in bvp_signals:
     print(bvp.shape)
