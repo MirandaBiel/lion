@@ -216,6 +216,46 @@
         <string>GRGB</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>CHROM</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>LGI</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>POS</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>PBV</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>PCA</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>OMIT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ICA</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SSR</string>
+       </property>
+      </item>
      </widget>
     </item>
    </layout>
