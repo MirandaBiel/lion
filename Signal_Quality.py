@@ -99,7 +99,6 @@ def PPG_analysis(signal: list, window_size: int, SQI: str) -> dict:
     else:
         return print(f"Error: SQI: {SQI} not found")
 
-
 """ 
     As funções abaixo devem receber um sinal PPG no formato list ou np.array
     e retornam os respectivos resultados da analise do sinal PPG.
@@ -119,7 +118,6 @@ def Perfusion(signal: list) -> float:
     
     return round(PSQI, 4)
 
-
 def Skewness(signal: list) -> float:
     """Skewness is a measure of the asymmetry of a prob ability
     distribution and is related to distorted PPG signals"""
@@ -133,7 +131,6 @@ def Skewness(signal: list) -> float:
     SSQI = (1/N) * sum
 
     return round(SSQI, 4)
-
 
 def Kurtosis(signal: list) -> float:
     """Kurtosis measures how the tails of a distribution differ 
@@ -151,7 +148,6 @@ def Kurtosis(signal: list) -> float:
 
     return round(KSQI, 4)
 
-
 def Entropy(signal: list) -> float:
     """Entropy quantifies the uncertainty in a signal probability density 
     function (PDF) and is anothereffective indicator of PPG signal quality"""
@@ -163,7 +159,6 @@ def Entropy(signal: list) -> float:
     ESQI = -sum
 
     return round(ESQI, 4)
-
 
 def Zero_Crossing_rate(signal: list) -> float:
     """The zero crossing rate indicates the rate of sign changes in the signal, 
@@ -177,7 +172,6 @@ def Zero_Crossing_rate(signal: list) -> float:
     ZSQI = (1/N) * zero_crossings
 
     return round(ZSQI, 4)
-
 
 def SNR(signal: list) -> float:
     """This SQI compares the power of the desirable signal to the power of undesired background noise"""
