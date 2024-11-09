@@ -19,6 +19,7 @@ class SuperFoco(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
+        self.ui.pushButton_trigger_start.clicked.connect(self.trigger)
         
     def voltar(self):
         mode = self.ui.comboBox_af_mode.currentText()
@@ -36,6 +37,7 @@ class SuperFoco(QDialog):
         mode = self.ui.comboBox_af_mode.currentText()
         if mode == 'Auto':
             self.main_window.ui.picam2.autofocus_cycle(wait=False)
+            print('Focado!')
 
 
 
