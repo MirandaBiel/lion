@@ -76,6 +76,44 @@ def processa_um_frame(frame):
     
     return np.array(patch_colors)  # Retorna um array [num_patches, 3]
 
+def processa_um_frame_ssr(frame, patch_id=151, target_size=(32, 32)):
+    """
+    Processa um único frame para extrair a região de interesse (patch 151) em formato adequado para a função SSR.
+    Sempre retorna um ndarray com shape [target_size[0], target_size[1], 3].
+    """
+    # Processa o frame para obter landmarks
+    results = face_mesh.process(frame)
+    
+    # Inicializa o patch com zeros caso não seja detectado rosto
+    patch_crop = np.zeros((target_size[0], target_size[1], 3), dtype=np.float32)
+    
+    if results.multi_face_landmarks:
+        face_landmarks = results.multi_face_landmarks[0]
+        
+        # Converte coordenadas normalizadas para pixels
+        landmarks_points = [
+            (int(landmark.x * frame.shape[1]), int(landmark.y * frame.shape[0]))
+            for landmark in face_landmarks.landmark
+        ]
+        
+        # Calcula o tamanho do patch (usando distância entre landmarks como referência)
+        l = int((math.sqrt((landmarks_points[337][0] - landmarks_points[108][0]) ** 2 +
+                           (landmarks_points[337][1] - landmarks_points[108][1]) ** 2)) / 5)
+        
+        # Extrai o patch 151 para análise
+        y_min = max(0, landmarks_points[patch_id][1] - l)
+        y_max = min(frame.shape[0], landmarks_points[patch_id][1] + l)
+        x_min = max(0, landmarks_points[patch_id][0] - l)
+        x_max = min(frame.shape[1], landmarks_points[patch_id][0] + l)
+        
+        if y_max > y_min and x_max > x_min:
+            patch_crop_raw = frame[y_min:y_max, x_min:x_max]
+            
+            # Redimensiona para o tamanho fixo `target_size` (independente do tamanho original)
+            patch_crop = cv2.resize(patch_crop_raw, target_size, interpolation=cv2.INTER_AREA)
+    
+    return patch_crop.astype(np.float32)  # Retorna um array [32, 32, 3]
+
 def plot_rppg_signal(rppg_data, fs):
     """
     Plota o sinal RPPG extraído ao longo do tempo para cada patch e cada canal (R, G, B).
@@ -105,6 +143,7 @@ caminho_video = 'video_face_1.h264'
 
 # Lista para armazenar os valores RGB
 rppg_channels = []
+rppg_channels_ssr = []
 
 # Abre o vídeo
 captura = cv2.VideoCapture(caminho_video)
@@ -121,6 +160,10 @@ else:
         # Processa o frame e armazena o resultado
         rgb_values = processa_um_frame(frame)  # Agora retorna [num_patches, 3]
         rppg_channels.append(rgb_values)
+
+        # Processa o frame e extrai o patch 151 com tamanho fixo
+        patch_crop = processa_um_frame_ssr(frame, target_size=(32, 32))
+        rppg_channels_ssr.append(patch_crop)
         
         # Exibe o frame
         cv2.imshow('Frame', frame)
@@ -135,6 +178,9 @@ cv2.destroyAllWindows()
 rppg_channels = np.array(rppg_channels, dtype=np.float32)
 rppg_channels = rppg_channels.transpose(1, 2, 0)
 
+# Converte a lista para um ndarray com o formato necessário [num_frames, rows, columns, rgb_channels]
+rppg_channels_ssr = np.array(rppg_channels_ssr, dtype=np.float32)
+
 # Mostra o gráfico das capturas no tempo
 plot_rppg_signal(rppg_channels, fs)
 
@@ -148,9 +194,10 @@ bvp_ica = rppg.ICA(rppg_channels, component='second_comp')
 bvp_omit = rppg.OMIT(rppg_channels)
 bvp_pbv = rppg.PBV(rppg_channels)
 bvp_pca = rppg.PCA(rppg_channels, component='second_comp')
+bvp_ssr = rppg.SSR(rppg_channels_ssr, fps=fs)
 
 # Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca]
+bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca, bvp_ssr]
 
 # Analisa os formatos de retorno
 for i in bvp_signals:
