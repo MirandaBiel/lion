@@ -20,12 +20,9 @@ class SuperAdvancedSettings(QDialog):
 
         # Conecta as entradas com as funções
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
-        self.ui.horizontalSlider_aguca.valueChanged.connect(self.sliders_update)
-        self.ui.horizontalSlider_brilho.valueChanged.connect(self.sliders_update)
-        self.ui.horizontalSlider_contr.valueChanged.connect(self.sliders_update)
-        self.ui.horizontalSlider_sat.valueChanged.connect(self.sliders_update)
         
     def voltar(self):
+        self.sliders_update()
         self.hide()  # Oculta a janela, mantendo os dados
         self.main_window.show()  # Exibe a janela principal novamente
 
@@ -38,7 +35,7 @@ class SuperAdvancedSettings(QDialog):
         }
 
     def sliders_update(self):
-        self.main_window.ui.picam2.set_controls(self.img_dict)
+        self.main_window.ui.picam2.set_controls(self.img_dict())
 
 
 if __name__ == "__main__":
