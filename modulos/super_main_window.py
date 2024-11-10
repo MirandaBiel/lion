@@ -32,7 +32,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
-        self.ui.startButton.clicked.connect(self.start_capture)
+        self.ui.startButton.clicked.connect(self.mostra_variaveis)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -42,7 +42,7 @@ class SuperMainWindow(QDialog):
 
         # Variáveis para captura
         self.encoder = H264Encoder()
-        self.output = FileOutput("video_face_4.h264")
+        self.output = FileOutput("video_face_5.h264")
         self.frames = []
 
         # Variáveis das janelas
@@ -137,20 +137,7 @@ class SuperMainWindow(QDialog):
         self.ui.progressBar_2.setValue(progress_value)
     
     def mostra_variaveis(self):
-        print("Landmarks")
-        print(self.landmarks)
-        #print("Frame Duration")
-        #print(self.frame_duration)
-        #print("size")
-        #print(self.size)
-        print('landmarks gain')
-        print(self.landmarks_gain)
-        print('metodo')
-        print(self.method)
-        print('analysis')
-        print(self.analysis)
-        print('fps')
-        print(self.fps)
+        pass
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

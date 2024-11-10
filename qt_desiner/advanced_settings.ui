@@ -176,9 +176,32 @@ color: rgb(255, 255, 255);</string>
      <height>41</height>
     </rect>
    </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
    <item>
     <property name="text">
-     <string>600x800</string>
+     <string>992x750</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>800x600</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>640x480</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>512x384</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>320x240</string>
     </property>
    </item>
   </widget>
@@ -204,8 +227,14 @@ color: rgb(255, 255, 255);</string>
      <height>22</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>20</number>
+   </property>
+   <property name="singleStep">
+    <number>1</number>
+   </property>
    <property name="value">
-    <number>50</number>
+    <number>10</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -233,8 +262,11 @@ color: rgb(255, 255, 255);</string>
      <height>22</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>20</number>
+   </property>
    <property name="value">
-    <number>50</number>
+    <number>10</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -262,8 +294,11 @@ color: rgb(255, 255, 255);</string>
      <height>22</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>20</number>
+   </property>
    <property name="value">
-    <number>50</number>
+    <number>10</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -291,8 +326,17 @@ color: rgb(255, 255, 255);</string>
      <height>22</height>
     </rect>
    </property>
+   <property name="minimum">
+    <number>-10</number>
+   </property>
+   <property name="maximum">
+    <number>10</number>
+   </property>
+   <property name="singleStep">
+    <number>1</number>
+   </property>
    <property name="value">
-    <number>50</number>
+    <number>0</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
