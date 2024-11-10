@@ -20,13 +20,41 @@ class SuperAdvancedSettings(QDialog):
 
         # Conecta as entradas com as funções
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
+
+        # Controles da janela
+        self.AwbEnable = None
+        self.AwbMode = 0
+        self.AeEnable = None
+        self.AeConstraintMode = 0
+        self.AeExposureMode = 0
+        self.AeFlickerMode = 0
+        self.AeFlickerPeriod = 8333
+        self.AeMeteringMode = 0
+        self.HdrMode = 0
+        self.HdrChannel = None # Não há essa funcionalidade na câmera
+        self.NoiseReductionMode = 0
+
+    # exemplo de configuração (controles é um dicionário)    
+    '''
+    config = picam2.create_video_configuration(main={"format": 'RGB888', "size": Size[i]},
+                                                   buffer_count=15,
+                                                   queue=True,
+                                                   display=None,
+                                                   encode=None,
+                                                   controls={"FrameDurationLimits": (33333, 33333),
+                                                             "AwbEnable": AwbEnable[i],
+                                                             "AeFlickerMode": AeFlickerMode[i],
+                                                             "NoiseReductionMode": NoiseReductionMode[i],
+                                                             "AeEnable": AeEnable[i]})	
+    
+    '''
         
     def voltar(self):
         self.sliders_update()
         self.hide()  # Oculta a janela, mantendo os dados
         self.main_window.show()  # Exibe a janela principal novamente
 
-    def img_dict(self):
+    def dict_controls(self): # modificar para ser um dicionario geral para os controles
         return {
             "Saturation": int(self.ui.horizontalSlider_sat.value() / 10),
             "Contrast": int(self.ui.horizontalSlider_contr.value() / 10),
@@ -35,7 +63,7 @@ class SuperAdvancedSettings(QDialog):
         }
 
     def sliders_update(self):
-        self.main_window.ui.picam2.set_controls(self.img_dict())
+        self.main_window.ui.picam2.set_controls(self.dict_controls())
 
 
 if __name__ == "__main__":
