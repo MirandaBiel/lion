@@ -40,12 +40,6 @@ class SuperFoco(QDialog):
             print('Focado!')
 
 
-
-
-
-
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
