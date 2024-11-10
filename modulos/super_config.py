@@ -97,12 +97,6 @@ class SuperConfig(QDialog):
         self.hide()  # Oculta a janela, mantendo os dados
         self.main_window.show()  # Exibe a janela principal novamente
 
-        
-
-
-
-        
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
