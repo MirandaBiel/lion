@@ -38,6 +38,12 @@ class SuperAdvancedSettings(QDialog):
         self.HdrChannel = None # Não há essa funcionalidade na câmera
         self.NoiseReductionMode = 0
 
+        # Configurações da janela
+        self.config_base_index = 0
+        self.size = (800, 600)
+        self.controls = {}
+        self.config = None
+
     # exemplo de configuração (controles é um dicionário)    
     '''
     config = picam2.create_video_configuration(main={"format": 'RGB888', "size": Size[i]},
@@ -52,9 +58,10 @@ class SuperAdvancedSettings(QDialog):
                                                              "AeEnable": AeEnable[i]})	
     
     '''
-    
+
     def voltar(self):
         self.update_controls()
+        self.update_config()
         self.hide()  # Oculta a janela, mantendo os dados
         self.main_window.show()  # Exibe a janela principal novamente
 
@@ -72,7 +79,8 @@ class SuperAdvancedSettings(QDialog):
             "AeFlickerPeriod": self.AeFlickerPeriod,
             "AeMeteringMode": self.AeMeteringMode,
             "HdrMode": self.HdrMode,
-            "NoiseReductionMode": self.NoiseReductionMode
+            "NoiseReductionMode": self.NoiseReductionMode,
+            "FrameDurationLimits": (self.main_window.frame_duration, self.main_window.frame_duration)
         }
 
     def update_controls(self):
@@ -93,8 +101,44 @@ class SuperAdvancedSettings(QDialog):
         self.NoiseReductionMode = self.ui.comboBox_Noise_redu_mode.currentIndex()
 
         # Atualiza os controles
-        self.main_window.ui.picam2.set_controls(self.dict_controls())
+        self.controls = self.dict_controls()
+        #self.main_window.ui.picam2.set_controls(self.dict_controls())
 
+    def update_config(self):
+        # Atualiza valores
+        size_index = self.ui.comboBox_formato.currentIndex()
+        if size_index == 0:
+            self.size = (992, 750)
+        if size_index == 1:
+            self.size = (800, 600)
+        if size_index == 2:
+            self.size = (640, 480)
+        if size_index == 3:
+            self.size = (512, 384)
+        if size_index == 4:
+            self.size = (320, 240)
+        
+        # Gera a configuração base
+        self.config_base_index = self.ui.comboBox_base_config.currentIndex()
+        if self.config_base_index == 0:
+            self.config = self.main_window.ui.picam2.create_video_configuration(
+            controls=self.controls,
+            main={"size": self.size}
+        )
+        if self.config_base_index == 1:
+            self.config = self.main_window.ui.picam2.create_preview_configuration(
+            controls=self.controls,
+            main={"size": self.size}
+        )
+        if self.config_base_index == 2:
+            self.config = self.main_window.ui.picam2.create_still_configuration(
+            controls=self.controls,
+            main={"size": self.size}
+        )
+
+        self.main_window.stop_camera()
+        self.main_window.config = self.config
+        self.main_window.start_camera()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

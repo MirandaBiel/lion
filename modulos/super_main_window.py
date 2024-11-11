@@ -68,6 +68,10 @@ class SuperMainWindow(QDialog):
         self.frames_capturados = 0
         self.frames_gravados = 0
         self.cont_enable = False
+        self.config = self.ui.picam2.create_video_configuration(
+            controls={"FrameDurationLimits": (self.frame_duration, self.frame_duration)},
+            main={"size": self.size}
+        )
 
     def post_callback(self, request):
         if self.cont_enable:
@@ -103,11 +107,7 @@ class SuperMainWindow(QDialog):
             self.ui.picam2.stop()
 
     def config_camera(self):
-        video_config = self.ui.picam2.create_video_configuration(
-            controls={"FrameDurationLimits": (self.frame_duration, self.frame_duration)},
-            main={"size": self.size}
-        )
-        self.ui.picam2.configure(video_config)
+        self.ui.picam2.configure(self.config)
         print(self.ui.picam2.camera_configuration())
 
     def start_capture(self):
@@ -137,7 +137,7 @@ class SuperMainWindow(QDialog):
         self.ui.progressBar_2.setValue(progress_value)
     
     def mostra_variaveis(self):
-        pass
+        print(self.ui.picam2.camera_configuration())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
