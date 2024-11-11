@@ -47,7 +47,7 @@ class Ui_Dialog(object):
         self.label_n_buffers.setObjectName("label_n_buffers")
         self.spinBox_n_buffers = QtWidgets.QSpinBox(Dialog)
         self.spinBox_n_buffers.setGeometry(QtCore.QRect(190, 110, 91, 101))
-        self.spinBox_n_buffers.setProperty("value", 12)
+        self.spinBox_n_buffers.setProperty("value", 6)
         self.spinBox_n_buffers.setObjectName("spinBox_n_buffers")
         self.label_espaco_cores = QtWidgets.QLabel(Dialog)
         self.label_espaco_cores.setGeometry(QtCore.QRect(20, 260, 131, 21))
