@@ -112,6 +112,7 @@ class SuperMainWindow(QDialog):
 
     def start_capture(self):
         self.tempo_de_captura = (self.ui.spinBox_tempo_2.value() * 1000)
+        self.timer_interval = int(self.tempo_de_captura / 10)
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
         self.cont_enable = True
