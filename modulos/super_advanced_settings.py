@@ -52,7 +52,7 @@ class SuperAdvancedSettings(QDialog):
                                                              "AeEnable": AeEnable[i]})	
     
     '''
-        
+    
     def voltar(self):
         self.update_controls()
         self.hide()  # Oculta a janela, mantendo os dados
