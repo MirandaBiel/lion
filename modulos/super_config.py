@@ -38,7 +38,9 @@ class SuperConfig(QDialog):
         self.main_window.fps = self.ui.spinBox_fs.value()
         self.main_window.frame_duration = int(1000000 / self.main_window.fps)
         self.main_window.method = self.ui.comboBox_metodo.currentText()
+        print(self.main_window.frame_duration)
         self.main_window.ui.picam2.set_controls(controls={"FrameDurationLimits": (self.main_window.frame_duration, self.main_window.frame_duration)})
+        print('Setado')
         self.main_window.landmarks_gain = self.ui.horizontalSlider_patches_size.value() / 10
         self.main_window.landmarks = []
         if self.ui.checkBox_10.isChecked():
