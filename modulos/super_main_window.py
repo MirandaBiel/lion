@@ -32,7 +32,7 @@ class SuperMainWindow(QDialog):
         self.ui.pushButton_config_avanca.clicked.connect(self.open_advanced_settings_window)
         self.ui.pushButton_foco.clicked.connect(self.open_foco_window)
         self.ui.pushButton_resultados.clicked.connect(self.open_results_window)
-        self.ui.startButton.clicked.connect(self.mostra_variaveis)
+        self.ui.startButton.clicked.connect(self.start_capture)
 
         # Inicializando as janelas filhas e passando `self` como referência para `main_window`
         self.advanced_settings_window = SuperAdvancedSettings(self)
@@ -57,8 +57,8 @@ class SuperMainWindow(QDialog):
 
         # Timer para parar a gravação
         self.record_timer = QTimer()
-        self.timer_interval = int(self.tempo_de_captura / 10)
-        self.record_timer.setInterval(self.timer_interval)
+        #self.timer_interval = int(self.tempo_de_captura / 10)
+        #self.record_timer.setInterval(self.timer_interval)
         self.record_timer.timeout.connect(self.update_progress)
         self.elapsed_time = 0
 
@@ -113,6 +113,8 @@ class SuperMainWindow(QDialog):
     def start_capture(self):
         self.tempo_de_captura = (self.ui.spinBox_tempo_2.value() * 1000)
         self.timer_interval = int(self.tempo_de_captura / 10)
+        self.record_timer.setInterval(self.timer_interval)
+        print(self.timer_interval)
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
         self.cont_enable = True
