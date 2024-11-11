@@ -354,6 +354,9 @@ color: rgb(255, 255, 255);</string>
    <property name="text">
     <string>AeEnable</string>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_AE_contraint_mode">
    <property name="geometry">
@@ -557,6 +560,9 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>AwbEnable</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_AWB_mode">
