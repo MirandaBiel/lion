@@ -22,9 +22,13 @@ class SuperAdvancedSettings(QDialog):
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
 
         # Controles da janela
-        self.AwbEnable = None
+        self.Saturation = 1 
+        self.Contrast = 1
+        self.Sharpness = 1
+        self.Brightness = 0
+        self.AwbEnable = 1 #None
         self.AwbMode = 0
-        self.AeEnable = None
+        self.AeEnable = 1 #None
         self.AeConstraintMode = 0
         self.AeExposureMode = 0
         self.AeFlickerMode = 0
@@ -50,19 +54,45 @@ class SuperAdvancedSettings(QDialog):
     '''
         
     def voltar(self):
-        self.sliders_update()
+        self.update_controls()
         self.hide()  # Oculta a janela, mantendo os dados
         self.main_window.show()  # Exibe a janela principal novamente
 
     def dict_controls(self): # modificar para ser um dicionario geral para os controles
         return {
-            "Saturation": int(self.ui.horizontalSlider_sat.value() / 10),
-            "Contrast": int(self.ui.horizontalSlider_contr.value() / 10),
-            "Sharpness": int(self.ui.horizontalSlider_aguca.value() / 10),
-            "Brightness": int(self.ui.horizontalSlider_brilho.value() / 10),
+            "Saturation": self.Saturation,
+            "Contrast": self.Contrast,
+            "Sharpness": self.Sharpness,
+            "Brightness": self.Brightness,
+            "AwbEnable": self.AwbEnable,
+            "AwbMode": self.AwbMode,
+            "AeEnable": self.AeEnable,
+            "AeConstraintMode": self.AeConstraintMode,
+            "AeExposureMode": self.AeExposureMode,
+            "AeFlickerPeriod": self.AeFlickerPeriod,
+            "AeMeteringMode": self.AeMeteringMode,
+            "HdrMode": self.HdrMode,
+            "NoiseReductionMode": self.NoiseReductionMode
         }
 
-    def sliders_update(self):
+    def update_controls(self):
+        # Atualiza os valores
+        self.Saturation = self.ui.horizontalSlider_sat.value() / 10
+        self.Contrast = self.ui.horizontalSlider_contr.value() / 10
+        self.Sharpness = self.ui.horizontalSlider_aguca.value() / 10
+        self.Brightness = self.ui.horizontalSlider_brilho.value() / 10
+        self.AwbEnable = self.ui.checkBox_AWB.isChecked()
+        self.AwbMode = self.ui.comboBox_AWB_mode.currentIndex()
+        self.AeEnable = self.ui.checkBox_AE.isChecked()
+        self.AeConstraintMode = self.ui.comboBox_Ae_constraint.currentIndex()
+        self.AeExposureMode = self.ui.comboBox_AE_exposure.currentIndex()
+        self.AeFlickerMode = self.ui.comboBox_AE_Fliker_mode.currentIndex()
+        self.AeFlickerPeriod = self.ui.spinBox_AE_fliker_period.value()
+        self.AeMeteringMode = self.ui.comboBox_AE_metering.currentIndex()
+        self.HdrMode = self.ui.comboBox_HDR_MODE.currentIndex()
+        self.NoiseReductionMode = self.ui.comboBox_Noise_redu_mode.currentIndex()
+
+        # Atualiza os controles
         self.main_window.ui.picam2.set_controls(self.dict_controls())
 
 
