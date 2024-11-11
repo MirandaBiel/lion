@@ -57,8 +57,6 @@ class SuperMainWindow(QDialog):
 
         # Timer para parar a gravação
         self.record_timer = QTimer()
-        #self.timer_interval = int(self.tempo_de_captura / 10)
-        #self.record_timer.setInterval(self.timer_interval)
         self.record_timer.timeout.connect(self.update_progress)
         self.elapsed_time = 0
 
@@ -114,7 +112,6 @@ class SuperMainWindow(QDialog):
         self.tempo_de_captura = (self.ui.spinBox_tempo_2.value() * 1000)
         self.timer_interval = int(self.tempo_de_captura / 10)
         self.record_timer.setInterval(self.timer_interval)
-        print(self.timer_interval)
         self.ui.picam2.start_encoder(self.encoder, self.output)
         self.record_timer.start()
         self.cont_enable = True
