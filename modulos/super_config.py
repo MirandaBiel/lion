@@ -32,9 +32,9 @@ class SuperConfig(QDialog):
         
     def voltar(self):
         if self.ui.radioButton_espectro.isChecked():
-            self.main_window.analysis = 'espectral'
+            self.main_window.analysis = 'mediana'
         else:
-            self.main_window.analysis = 'peaks'
+            self.main_window.analysis = 'media'
         self.main_window.fps = self.ui.spinBox_fs.value()
         self.main_window.frame_duration = int(1000000 / self.main_window.fps)
         self.main_window.method = self.ui.comboBox_metodo.currentIndex()

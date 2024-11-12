@@ -225,8 +225,8 @@ class Ui_Dialog(object):
         self.comboBox_metodo.setItemText(7, _translate("Dialog", "ICA"))
         self.comboBox_metodo.setItemText(8, _translate("Dialog", "PCA"))
         self.comboBox_metodo.setItemText(9, _translate("Dialog", "GRGB"))
-        self.radioButton_picos.setText(_translate("Dialog", "Detecção de picos"))
-        self.radioButton_espectro.setText(_translate("Dialog", "Análise Espectral"))
+        self.radioButton_picos.setText(_translate("Dialog", "Modo média"))
+        self.radioButton_espectro.setText(_translate("Dialog", "Modo mediana"))
         self.pushButton_main_w.setText(_translate("Dialog", "Voltar"))
 import py_GUIs.icones_rc
 

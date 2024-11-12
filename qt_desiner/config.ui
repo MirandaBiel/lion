@@ -576,7 +576,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Detecção de picos</string>
+    <string>Modo média</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButton_espectro">
@@ -594,7 +594,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Análise Espectral</string>
+    <string>Modo mediana</string>
    </property>
    <property name="checked">
     <bool>true</bool>
