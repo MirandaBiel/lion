@@ -20,6 +20,7 @@ from collections import deque
 import numpy as np
 import io
 import time
+import os
 
 # Importações as classes correspondentes de cada janela da pasta 'modulos'
 from modulos.super_foco import SuperFoco
@@ -134,16 +135,21 @@ def processa_um_frame_ssr(frame, patch_id=151, target_size=(32, 32)):
     
     return patch_crop.astype(np.float32)  # Retorna um array [32, 32, 3]
 
-def plot_rppg_signal(rppg_data, fs):
+def plot_rppg_signal(rppg_data, fs, output_dir='plots'):
     """
-    Plota o sinal RPPG extraído ao longo do tempo para cada patch e cada canal (R, G, B).
+    Plota e salva o sinal RPPG extraído ao longo do tempo para cada patch e cada canal (R, G, B).
     
     Parâmetros:
     - rppg_data: numpy array com formato [n_patches, 3, n_frames]
     - fs: frequência de amostragem (Hz)
+    - output_dir: diretório onde os gráficos serão salvos (default: 'plots')
     """
     n_patches, _, num_frames = rppg_data.shape
     time = np.linspace(0, num_frames / fs, num_frames)
+    
+    # Cria o diretório se não existir
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     
     for patch_idx in range(n_patches):
         plt.figure(figsize=(10, 6))
@@ -156,7 +162,12 @@ def plot_rppg_signal(rppg_data, fs):
         plt.ylabel("Intensity")
         plt.legend()
         plt.grid(True)
-        plt.show()
+        
+        # Salva o gráfico em vez de exibir
+        output_path = os.path.join(output_dir, f'rppg_signal_patch_{patch_idx+1}.png')
+        plt.savefig(output_path, bbox_inches='tight')
+        plt.close()  # Fecha a figura para liberar memória
+        print(f"Gráfico salvo em: {output_path}")
 
 # Classe principal que expande a janela principal da aplicação
 class SuperMainWindow(QDialog):
