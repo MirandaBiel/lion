@@ -273,7 +273,7 @@ class SuperMainWindow(QDialog):
         # Converte a lista para um ndarray com o formato necessário [num_frames, rows, columns, rgb_channels]
         self.rppg_channels_ssr = np.array(self.rppg_channels_ssr, dtype=np.float32)
 
-        # Mostra o gráfico das capturas no tempo
+        # Mostra o gráfico da captura no tempo
         plot_rppg_signal(self.rppg_channels, self.fps)
 
     def post_callback(self, request):
