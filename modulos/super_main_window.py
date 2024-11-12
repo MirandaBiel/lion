@@ -58,7 +58,7 @@ def plot_bvp_signals_separately(bvp_signals, labels, fs):
             plt.grid(True)
             plt.show()
 
-def processa_um_frame(frame):
+def processa_um_frame(frame, patches):
     """Processa um único frame para extrair as médias RGB dos patches de interesse."""
     results = face_mesh.process(frame)
     patch_colors = []
@@ -239,7 +239,7 @@ class SuperMainWindow(QDialog):
                     break
                 
                 # Processa o frame e armazena o resultado
-                rgb_values = processa_um_frame(frame)  # Agora retorna [num_patches, 3]
+                rgb_values = processa_um_frame(frame, self.landmarks)  # Agora retorna [num_patches, 3]
                 self.rppg_channels.append(rgb_values)
 
                 # Processa o frame e extrai o patch 151 com tamanho fixo
