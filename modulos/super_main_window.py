@@ -265,6 +265,7 @@ class SuperMainWindow(QDialog):
 
             self.ui.progressBar_2.setValue(100)
             self.ui.label_comunicacao_2.setText('Análise concluida...')
+            print(f'Frames processados: {processed_frames}')
 
         # Converte a lista para um ndarray com shape [num_patches, 3, num_frames]
         self.rppg_channels = np.array(self.rppg_channels, dtype=np.float32)
