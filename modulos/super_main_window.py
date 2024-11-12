@@ -10,6 +10,8 @@ from picamera2.outputs import FileOutput
 from picamera2.encoders import H264Encoder
 
 # Importações utilitárias
+import matplotlib
+matplotlib.use('Agg')  # Define o backend para não-interativo
 import matplotlib.pyplot as plt
 import mediapipe as mp
 import math
