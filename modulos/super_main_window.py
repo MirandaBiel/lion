@@ -27,6 +27,13 @@ from modulos.super_config import SuperConfig
 from modulos.super_advanced_settings import SuperAdvancedSettings
 from modulos.super_results import SuperResults
 
+# Inicialisa o face_mesh do mediapipe
+face_mesh = mp.solutions.face_mesh.FaceMesh(
+    min_detection_confidence=0.5, 
+    min_tracking_confidence=0.5, 
+    max_num_faces=1
+)
+
 # Funções de plotagem e análise do sinal
 def plot_bvp_signals_separately(bvp_signals, labels, fs):
     """
