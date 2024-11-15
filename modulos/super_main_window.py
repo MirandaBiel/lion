@@ -1,9 +1,8 @@
 # Importações da GUI
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot, QTimer
 from PyQt5 import QtGui, QtWidgets
 from py_GUIs.main_window import Ui_Dialog
-from PyQt5.QtCore import QTimer
 
 # Importações da picamera
 from picamera2.outputs import FileOutput
@@ -137,7 +136,7 @@ def processa_um_frame_ssr(frame, patch_id=151, target_size=(32, 32)):
     
     return patch_crop.astype(np.float32)  # Retorna um array [32, 32, 3]
 
-def plot_rppg_signal(rppg_data, fs, n_video, output_dir='cache\plots'):
+def plot_rppg_signal(rppg_data, fs, n_video, output_dir='cache/plots'):
     """
     Plota e salva o sinal RPPG extraído ao longo do tempo para cada patch e cada canal (R, G, B).
     
@@ -194,7 +193,7 @@ class SuperMainWindow(QDialog):
         # Variáveis para captura
         self.n_video = 5
         self.encoder = H264Encoder()
-        self.video_path = 'cache\\' + f'video_face_{self.n_video}.h264'
+        self.video_path = os.path.join('cache', f'video_face_{self.n_video}.h264')
         self.output = FileOutput(self.video_path)
         self.frames = []
 
