@@ -265,6 +265,15 @@ class SuperMainWindow(QDialog):
         self.np_rppg_channels = None
         self.np_rppg_channels_ssr = None
 
+        # Variáveis dos resultados
+        self.bpm = 0
+        self.irpm = 0
+        self.tempo_de_analise = 52
+        self.iq1 = 0
+        self.iq2 = 0
+        self.ind_mim = None
+        self.ind_max = None
+
     def extract_raw_signal(self):
         # Zera as listas dos sinais
         self.rppg_channels = []
@@ -318,8 +327,8 @@ class SuperMainWindow(QDialog):
         signal_normalized = pf.filter_z(signal_detrending)
         signal_filtered = pf.filter_butterworth(signal_normalized)
         spectrum, freqs = pf.calculate_fft(signal_filtered)
-        
-
+        bpm = pf.calc_bpm(spectrum, freqs)
+        irmp = pf.irpm()
 
     def post_callback(self, request):
         if self.cont_enable:
@@ -376,6 +385,7 @@ class SuperMainWindow(QDialog):
 
         # Realiza a extração do sinal
         self.extract_raw_signal()
+        self.process_raw_signal_media()
 
     def update_progress(self):
         # Atualiza o tempo decorrido e a barra de progresso
