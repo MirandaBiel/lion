@@ -323,7 +323,8 @@ class SuperMainWindow(QDialog):
 
     def process_raw_signal_media(self):
         signal = pf.average_patches_to_single(self.rppg_channels)
-        signal_detrending = pf.detrending_highpass_filter(signal, self.fps)
+        bvp = rppg.CHROM(signal)
+        signal_detrending = pf.detrending_highpass_filter(bvp[0], self.fps)
         signal_normalized = pf.filter_z(signal_detrending)
         signal_filtered = pf.filter_butterworth(signal_normalized, self.fps)
         spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
