@@ -37,13 +37,14 @@ face_mesh = mp.solutions.face_mesh.FaceMesh(
     max_num_faces=1
 )
 
-# Salva um gráfico genérico
-def graph_generic_signal(signal, leg_signal, ind_variable, leg_ind_variable, title, path, ind_min=None, ind_max=None):
-    # Cria a pasta 'cache' se não existir
-    cache_dir = "cache"
-    if not os.path.exists(cache_dir):
-        os.makedirs(cache_dir)
-
+def graph_generic_signal(signal, leg_signal, ind_variable, leg_ind_variable, title, filename, ind_min=None, ind_max=None):
+    # Diretório onde os gráficos serão salvos
+    output_dir = "cache/plots"
+    
+    # Cria o diretório se não existir
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
     # Encontrar os índices mais próximos dos pontos de interesse, se especificados
     if ind_min is not None and ind_max is not None:
         l1 = np.argmax(ind_variable >= ind_min)
@@ -64,10 +65,10 @@ def graph_generic_signal(signal, leg_signal, ind_variable, leg_ind_variable, tit
     plt.legend()
     plt.grid(True)
 
-    # Caminho completo para salvar o arquivo na pasta 'cache'
-    save_path = os.path.join(cache_dir, path)
-    plt.savefig(save_path)
-
+    # Caminho completo para salvar o arquivo na pasta 'cache/plots'
+    save_path = os.path.join(output_dir, filename)
+    plt.savefig(save_path, bbox_inches='tight')
+    
     # Fechar o gráfico para liberar memória
     plt.close()
     print(f"Gráfico salvo em: {save_path}")
