@@ -4,7 +4,7 @@ import numpy as np
 import math
 import cv2
 import rPPG_Methods as rppg
-import Signal_Quality as sqi
+import signal_quality as sqi
 from scipy.signal import butter, filtfilt
 
 # Parâmetros

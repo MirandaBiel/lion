@@ -137,7 +137,7 @@ def processa_um_frame_ssr(frame, patch_id=151, target_size=(32, 32)):
     
     return patch_crop.astype(np.float32)  # Retorna um array [32, 32, 3]
 
-def plot_rppg_signal(rppg_data, fs, output_dir='plots'):
+def plot_rppg_signal(rppg_data, fs, n_video, output_dir='plots'):
     """
     Plota e salva o sinal RPPG extraído ao longo do tempo para cada patch e cada canal (R, G, B).
     
@@ -166,7 +166,7 @@ def plot_rppg_signal(rppg_data, fs, output_dir='plots'):
         plt.grid(True)
         
         # Salva o gráfico em vez de exibir
-        output_path = os.path.join(output_dir, f'rppg_signal_patch_{patch_idx+1}.png')
+        output_path = os.path.join(output_dir, f'video_{n_video}_rppg_signal_patch_{patch_idx+1}.png')
         plt.savefig(output_path, bbox_inches='tight')
         plt.close()  # Fecha a figura para liberar memória
         print(f"Gráfico salvo em: {output_path}")
@@ -194,7 +194,7 @@ class SuperMainWindow(QDialog):
         # Variáveis para captura
         self.n_video = 5
         self.encoder = H264Encoder()
-        self.video_path = f'video_face_{self.n_video}.h264'
+        self.video_path = f'cache\\video_face_{self.n_video}.h264'
         self.output = FileOutput(self.video_path)
         self.frames = []
 
@@ -275,7 +275,7 @@ class SuperMainWindow(QDialog):
         self.rppg_channels_ssr = np.array(self.rppg_channels_ssr, dtype=np.float32)
 
         # Mostra o gráfico da captura no tempo
-        plot_rppg_signal(self.rppg_channels, self.fps)
+        plot_rppg_signal(self.rppg_channels, self.fps, self.n_video)
 
     def post_callback(self, request):
         if self.cont_enable:
