@@ -240,7 +240,7 @@ class SuperMainWindow(QDialog):
         self.size = (800, 600)
         self.landmarks = [151, 101, 330]
         self.landmarks_gain = 1
-        self.method = 'GBGR'
+        self.method = 'GREEN'
         self.analysis = 'espectral'
 
         # Timer para parar a gravação
@@ -323,8 +323,35 @@ class SuperMainWindow(QDialog):
 
     def process_raw_signal_media(self):
         signal = pf.average_patches_to_single(self.rppg_channels)
-        bvp = rppg.CHROM(signal)
+        
+        if self.method == 'CHROM':
+            bvp = rppg.CHROM(signal)
+        elif self.method == 'GREEN':
+            bvp = rppg.GREEN(signal)
+        elif self.method == 'LGI':
+            bvp = rppg.LGI(signal)
+        elif self.method == 'POS':
+            bvp = rppg.POS(signal, fps=self.fps)
+        elif self.method == 'GBGR':
+            bvp = rppg.GBGR(signal)
+        elif self.method == 'ICA':
+            bvp = rppg.ICA(signal, component='second_comp')
+        elif self.method == 'OMIT':
+            bvp = rppg.OMIT(signal)
+        elif self.method == 'PBV':
+            bvp = rppg.PBV(signal)
+        elif self.method == 'PCA':
+            bvp = rppg.PCA(signal, component='second_comp')
+        elif self.method == 'SSR':
+            bvp = rppg.GREEN(signal)
+            #bvp = rppg.SSR(signal, fps=self.fps)
+        else:
+            bvp = rppg.GREEN(signal)
+
         signal_detrending = pf.detrending_highpass_filter(bvp[0], self.fps)
+        time = np.linspace(0, len(signal_detrending) / self.fps, signal_detrending)
+        graph_generic_signal(signal_detrending, 'signal_detrending', time, 'tempo', 'detrending', 'detrending')
+
         signal_normalized = pf.filter_z(signal_detrending)
         signal_filtered = pf.filter_butterworth(signal_normalized, self.fps)
         spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
