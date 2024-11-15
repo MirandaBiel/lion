@@ -349,7 +349,7 @@ class SuperMainWindow(QDialog):
             bvp = rppg.GREEN(signal)
 
         signal_detrending = pf.detrending_highpass_filter(bvp[0], self.fps)
-        time = np.linspace(0, len(signal_detrending) / self.fps, signal_detrending)
+        time = np.linspace(0, len(signal_detrending) / self.fps, len(signal_detrending))
         graph_generic_signal(signal_detrending, 'signal_detrending', time, 'tempo', 'detrending', 'detrending')
 
         signal_normalized = pf.filter_z(signal_detrending)
