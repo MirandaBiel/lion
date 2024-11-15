@@ -16,7 +16,7 @@ import mediapipe as mp
 import math
 import cv2
 import rPPG_Methods as rppg
-import process_functions as pf
+from modulos import process_functions as pf
 import sys
 from collections import deque
 import numpy as np
@@ -323,7 +323,7 @@ class SuperMainWindow(QDialog):
 
     def process_raw_signal_media(self):
         signal = pf.average_patches_to_single(self.rppg_channels)
-        signal_detrending = pf.detrending_highpass_filter(signal)
+        signal_detrending = pf.detrending_highpass_filter(signal, self.fps)
         signal_normalized = pf.filter_z(signal_detrending)
         signal_filtered = pf.filter_butterworth(signal_normalized)
         spectrum, freqs = pf.calculate_fft(signal_filtered)
