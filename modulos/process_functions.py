@@ -3,6 +3,12 @@ from scipy.interpolate import CubicSpline
 from scipy.linalg import inv
 import numpy as np
 
+# Calcula a média do sinal dos patches
+def average_patches_to_single(arr):
+    # Calcular a média ao longo da primeira dimensão (num_patches)
+    averaged_array = np.mean(arr, axis=0, keepdims=True)
+    return averaged_array
+
 # Apenas normaliza o sinal usando Z-score
 def filter_z(signal):
     # Z-Score Normalizacao 
@@ -92,7 +98,7 @@ def calculate_fft(signal, fs, padding_factor=10):
     return spectrum, freqs
 
 # Estima bpm
-def find_peak_in_range(spectrum, freqs, min_freq=30, max_freq=216):
+def calc_bpm(spectrum, freqs, min_freq=30, max_freq=216):
     # Encontrar os índices que correspondem à faixa de frequências desejada
     start_index = np.argmax(freqs >= min_freq)
     end_index = np.argmax(freqs >= max_freq)

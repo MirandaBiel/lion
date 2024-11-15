@@ -16,6 +16,7 @@ import mediapipe as mp
 import math
 import cv2
 import rPPG_Methods as rppg
+import process_functions as pf
 import sys
 from collections import deque
 import numpy as np
@@ -35,6 +36,41 @@ face_mesh = mp.solutions.face_mesh.FaceMesh(
     min_tracking_confidence=0.5, 
     max_num_faces=1
 )
+
+# Salva um gráfico genérico
+def graph_generic_signal(signal, leg_signal, ind_variable, leg_ind_variable, title, path, ind_min=None, ind_max=None):
+    # Cria a pasta 'cache' se não existir
+    cache_dir = "cache"
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+
+    # Encontrar os índices mais próximos dos pontos de interesse, se especificados
+    if ind_min is not None and ind_max is not None:
+        l1 = np.argmax(ind_variable >= ind_min)
+        l2 = np.argmax(ind_variable >= ind_max)
+        
+        # Plotar o gráfico com corte
+        plt.figure(figsize=(10, 6))
+        plt.plot(ind_variable[l1:l2], signal[l1:l2], color='blue')
+    else:
+        # Plotar o gráfico sem corte
+        plt.figure(figsize=(10, 6))
+        plt.plot(ind_variable, signal, color='blue')
+    
+    # Adicionar legendas e título
+    plt.xlabel(leg_ind_variable)
+    plt.ylabel(leg_signal)
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+
+    # Caminho completo para salvar o arquivo na pasta 'cache'
+    save_path = os.path.join(cache_dir, path)
+    plt.savefig(save_path)
+
+    # Fechar o gráfico para liberar memória
+    plt.close()
+    print(f"Gráfico salvo em: {save_path}")
 
 # Funções de plotagem e análise do sinal
 def plot_bvp_signals_separately(bvp_signals, labels, fs):
@@ -275,6 +311,15 @@ class SuperMainWindow(QDialog):
 
         # Mostra o gráfico da captura no tempo
         plot_rppg_signal(self.rppg_channels, self.fps, self.n_video)
+
+    def process_raw_signal_media(self):
+        signal = pf.average_patches_to_single(self.rppg_channels)
+        signal_detrending = pf.detrending_highpass_filter(signal)
+        signal_normalized = pf.filter_z(signal_detrending)
+        signal_filtered = pf.filter_butterworth(signal_normalized)
+        spectrum, freqs = pf.calculate_fft(signal_filtered)
+        
+
 
     def post_callback(self, request):
         if self.cont_enable:
