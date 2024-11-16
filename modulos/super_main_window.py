@@ -14,6 +14,7 @@ matplotlib.use('Agg')  # Define o backend para não-interativo
 import matplotlib.pyplot as plt
 import mediapipe as mp
 import math
+from modulos import signal_quality as sq
 import cv2
 import rPPG_Methods as rppg
 from modulos import process_functions as pf
@@ -275,7 +276,6 @@ class SuperMainWindow(QDialog):
         self.iq2 = 0
         self.ind_mim = None
         self.ind_max = None
-        self.bvp_patches = []
         self.best_patch = 0
 
     def extract_raw_signal(self):
@@ -327,6 +327,8 @@ class SuperMainWindow(QDialog):
 
     def process_raw_signal_mediana(self):
         iq_patches = []
+        bpm = []
+        irpm = []
 
         if self.method == 'CHROM':
             bvp_patches = rppg.CHROM(self.rppg_channels)
@@ -383,7 +385,7 @@ class SuperMainWindow(QDialog):
             )
             
             # Calcular a FFT
-            spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
+            spectrum, freqs = pf.calculate_fft(bvp_patch, self.fps)
             
             # Gráfico da análise espectral
             graph_generic_signal(
@@ -398,13 +400,21 @@ class SuperMainWindow(QDialog):
             )
             
             # Calcular BPM e IMRP
-            bpm = pf.calc_frequencia_cardiaca(spectrum, freqs)
+            bpm_ = pf.calc_frequencia_cardiaca(spectrum, freqs)
+            bpm.append(bpm_)
             iq_patches.append(pf.analyze_signal_spectrum(spectrum, freqs, min_bpm=30, max_bpm=200, num_peaks=20))
-            print(f"BPM {i}: {bpm}")
-            irpm = pf.calc_frequencia_respiratoria(bvp_patch, self.fps)
-            print(f"irpm {i}: {irpm}")
+            print(f"BPM {i}: {bpm_}")
+            irpm_ = pf.calc_frequencia_respiratoria(bvp_patch, self.fps)
+            irpm.append(irpm_)
+            print(f"irpm {i}: {irpm_}")
             
-        print(f'Indices de qualidade: {iq_patches}')
+        max_index = np.argmax(iq_patches)
+        self.bpm = bpm[max_index]
+        self.irpm = irpm[max_index]
+        self.best_patch = max_index
+        self.iq1 = iq_patches[max_index]
+        self.iq2 = sq.Kurtosis(self.bpm)
+        print('OK! OK')
 
     def post_callback(self, request):
         if self.cont_enable:

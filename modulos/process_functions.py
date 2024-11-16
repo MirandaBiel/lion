@@ -22,7 +22,7 @@ def filter_z(signal):
 def filter_butterworth(signal, fs, order=6):
     # Aplica o filtro de passa banda
     nyquist = 0.5 * fs
-    f_low = 0.3
+    f_low = 0.4
     f_high = 6
 
     # Calcular as frequências normalizadas
