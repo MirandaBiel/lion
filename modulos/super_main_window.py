@@ -242,7 +242,7 @@ class SuperMainWindow(QDialog):
         self.size = (800, 600)
         self.landmarks = [151, 101, 330]
         self.landmarks_gain = 1
-        self.method = 'GREEN'
+        self.method = 'GBGR'
         self.analysis = 'espectral'
 
         # Timer para parar a gravação
