@@ -385,7 +385,7 @@ class SuperMainWindow(QDialog):
             )
             
             # Calcular a FFT
-            spectrum, freqs = pf.calculate_fft(bvp_patch, self.fps)
+            spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
             
             # Gráfico da análise espectral
             graph_generic_signal(
