@@ -276,6 +276,7 @@ class SuperMainWindow(QDialog):
         self.ind_mim = None
         self.ind_max = None
         self.bvp_patches = []
+        self.best_patch = 0
 
     def extract_raw_signal(self):
         # Zera as listas dos sinais
@@ -325,6 +326,8 @@ class SuperMainWindow(QDialog):
         plot_rppg_signal(self.rppg_channels, self.fps, self.n_video)
 
     def process_raw_signal_mediana(self):
+        iq_patches = []
+
         if self.method == 'CHROM':
             bvp_patches = rppg.CHROM(self.rppg_channels)
         elif self.method == 'GREEN':
@@ -349,15 +352,58 @@ class SuperMainWindow(QDialog):
         else:
             bvp_patches = rppg.GREEN(self.rppg_channels)
 
-        for bvp_patch in bvp_patches:
+        for i, bvp_patch in enumerate(bvp_patches):
+            # Gráfico do sinal original (antes de aplicar o filtro)
+            graph_generic_signal(
+                signal_filtered, 
+                'bvp_patch', 
+                time_array, 
+                'Tempo', 
+                'Sinal Original', 
+                f'BVP_signal_{i}.png',  # Nome do arquivo com o índice
+                ind_min=None, 
+                ind_max=None
+            )
+            
+            # Aplicar o filtro Butterworth
             signal_filtered = pf.filter_z_butterworth(bvp_patch, self.fps)
             time_array = np.linspace(0, len(signal_filtered) / self.fps, len(signal_filtered))
-            graph_generic_signal(signal_filtered, 'signal_filtered', time_array, 'time_array', 'signal', 'signal', ind_min=None, ind_max=None)
+            
+            # Gráfico do sinal filtrado
+            graph_generic_signal(
+                signal_filtered, 
+                'Amplitude', 
+                time_array, 
+                'Tempo', 
+                'Sinal Filtrado', 
+                f'BVP_filtered_{i}.png',  # Nome do arquivo com o índice
+                ind_min=None, 
+                ind_max=None
+            )
+            
+            # Calcular a FFT
             spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
-            graph_generic_signal(spectrum, 'spectrum', freqs, 'freqs', 'fft', 'fft', ind_min=20, ind_max=200)
-            bpm = pf.calc_bpm(spectrum, freqs)
-            print(bpm)
-            irmp = pf.irpm()
+            
+            # Gráfico da análise espectral
+            graph_generic_signal(
+                spectrum, 
+                'Amplitude', 
+                freqs, 
+                'Frequência (bpm)', 
+                'Análise Espectral', 
+                f'BVP_spectrum_{i}.png',  # Nome do arquivo com o índice
+                ind_min=20, 
+                ind_max=200
+            )
+            
+            # Calcular BPM e IMRP
+            bpm = pf.calc_frequencia_cardiaca(spectrum, freqs)
+            iq_patches.append(pf.analyze_signal_spectrum(spectrum, freqs, min_bpm=30, max_bpm=200, num_peaks=20))
+            print(f"BPM {i}: {bpm}")
+            irpm = pf.calc_frequencia_respiratoria(bvp_patch, self.fps)
+            print(f"irpm {i}: {irpm}")
+            
+        print(f'Indices de qualidade: {iq_patches}')
 
     def post_callback(self, request):
         if self.cont_enable:
