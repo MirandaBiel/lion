@@ -277,6 +277,7 @@ class SuperMainWindow(QDialog):
         self.ind_mim = None
         self.ind_max = None
         self.best_patch = 0
+        self.ppg = []
 
     def extract_raw_signal(self):
         # Zera as listas dos sinais
@@ -358,6 +359,7 @@ class SuperMainWindow(QDialog):
             
             # Aplicar o filtro Butterworth
             signal_filtered = pf.filter_z_butterworth(bvp_patch, self.fps)
+            self.ppg.append(signal_filtered)
             time_array = np.linspace(0, len(signal_filtered) / self.fps, len(signal_filtered))
 
             # Gráfico do sinal original (antes de aplicar o filtro)
@@ -415,7 +417,7 @@ class SuperMainWindow(QDialog):
         self.iq1 = iq_patches[max_index]
         self.iq2 = sq.Kurtosis(self.bpm)
         print('aqui')
-        print(len(bpm[0]))
+        print(len(self.ppg[max_index]))
 
     def post_callback(self, request):
         if self.cont_enable:
