@@ -19,11 +19,11 @@ def filter_z(signal):
     return norm_signal
 
 # Apenas filtro de butterworth
-def filter_butterworth(signal, fs, order=6):
+def filter_butterworth(signal, fs, order=4):
     # Aplica o filtro de passa banda
     nyquist = 0.5 * fs
-    f_low = 0.6
-    f_high = 3.6
+    f_low = 0.2
+    f_high = 4.6
 
     # Calcular as frequências normalizadas
     wn_low =  f_low / nyquist
