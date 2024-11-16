@@ -37,6 +37,7 @@ face_mesh = mp.solutions.face_mesh.FaceMesh(
     max_num_faces=1
 )
 
+# Salva gráfico genérico
 def graph_generic_signal(signal, leg_signal, ind_variable, leg_ind_variable, title, filename, ind_min=None, ind_max=None):
     # Diretório onde os gráficos serão salvos
     output_dir = "cache/plots"
