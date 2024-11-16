@@ -350,6 +350,7 @@ class SuperMainWindow(QDialog):
         else:
             bvp_patches = rppg.GREEN(signal)
 
+        print(bvp_patches.shape)
         for bvp_patch in bvp_patches:
             signal_filtered = pf.filter_butterworth(bvp_patch, self.fps)
             spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
