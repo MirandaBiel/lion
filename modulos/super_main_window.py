@@ -417,7 +417,7 @@ class SuperMainWindow(QDialog):
         self.iq1 = iq_patches[max_index]
         self.iq2 = sq.Kurtosis(self.bpm)
         print('aqui')
-        print(len(self.ppg[max_index]))
+        print(self.ppg[max_index])
 
     def post_callback(self, request):
         if self.cont_enable:
