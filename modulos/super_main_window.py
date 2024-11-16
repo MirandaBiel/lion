@@ -350,7 +350,7 @@ class SuperMainWindow(QDialog):
             bvp_patches = rppg.GREEN(self.rppg_channels)
 
         for bvp_patch in bvp_patches:
-            signal_filtered = pf.filter_butterworth(bvp_patch, self.fps)
+            signal_filtered = pf.filter_z_butterworth(bvp_patch, self.fps)
             time_array = np.linspace(0, len(signal_filtered) / self.fps, len(signal_filtered))
             graph_generic_signal(signal_filtered, 'signal_filtered', time_array, 'time_array', 'signal', 'signal', ind_min=None, ind_max=None)
             spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)

@@ -22,8 +22,8 @@ def filter_z(signal):
 def filter_butterworth(signal, fs, order=4):
     # Aplica o filtro de passa banda
     nyquist = 0.5 * fs
-    f_low = 0.2
-    f_high = 4.6
+    f_low = 0.1
+    f_high = 6
 
     # Calcular as frequências normalizadas
     wn_low =  f_low / nyquist
@@ -89,7 +89,7 @@ def detrending_highpass_filter(signal, fs, lambda_value=300):
     return filtered_signal
 
 # Transformada de Fourier
-def calculate_fft(signal, fs, padding_factor=1000):
+def calculate_fft(signal, fs, padding_factor=100):
     # Calcular a FFT com padding
     fft_result = np.fft.fft(signal, n=len(signal) * padding_factor)
     spectrum = np.abs(fft_result)  # Módulo do espectro
