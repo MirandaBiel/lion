@@ -355,7 +355,7 @@ class SuperMainWindow(QDialog):
         for i, bvp_patch in enumerate(bvp_patches):
             # Gráfico do sinal original (antes de aplicar o filtro)
             graph_generic_signal(
-                signal_filtered, 
+                bvp_patch, 
                 'bvp_patch', 
                 time_array, 
                 'Tempo', 
