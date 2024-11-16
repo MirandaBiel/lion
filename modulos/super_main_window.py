@@ -52,11 +52,11 @@ def graph_generic_signal(signal, leg_signal, ind_variable, leg_ind_variable, tit
         
         # Plotar o gráfico com corte
         plt.figure(figsize=(10, 6))
-        plt.plot(ind_variable[l1:l2], signal[l1:l2], color='blue')
+        plt.plot(ind_variable[l1:l2], signal[l1:l2], color='blue', label=leg_signal)
     else:
         # Plotar o gráfico sem corte
         plt.figure(figsize=(10, 6))
-        plt.plot(ind_variable, signal, color='blue')
+        plt.plot(ind_variable, signal, color='blue', label=leg_signal)
     
     # Adicionar legendas e título
     plt.xlabel(leg_ind_variable)
@@ -357,6 +357,7 @@ class SuperMainWindow(QDialog):
         signal_filtered = pf.filter_butterworth(signal_normalized, self.fps)
         spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
         bpm = pf.calc_bpm(spectrum, freqs)
+        print(bpm)
         irmp = pf.irpm()
 
     def post_callback(self, request):
