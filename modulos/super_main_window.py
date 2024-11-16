@@ -350,7 +350,7 @@ class SuperMainWindow(QDialog):
         else:
             bvp_patches = rppg.GREEN(signal)
         
-        time_array = np.linspace(0, bvp_patches[0] / self.fps, bvp_patches[0])
+        time_array = np.linspace(0, bvp_patches[0][0] / self.fps, bvp_patches[0][0])
 
         for bvp_patch in bvp_patches:
             signal_filtered = pf.filter_butterworth(bvp_patch, self.fps)
