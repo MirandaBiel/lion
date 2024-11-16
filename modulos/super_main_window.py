@@ -325,32 +325,30 @@ class SuperMainWindow(QDialog):
         plot_rppg_signal(self.rppg_channels, self.fps, self.n_video)
 
     def process_raw_signal_mediana(self):
-        signal = pf.average_patches_to_single(self.rppg_channels)
         if self.method == 'CHROM':
-            bvp_patches = rppg.CHROM(signal)
+            bvp_patches = rppg.CHROM(self.rppg_channels)
         elif self.method == 'GREEN':
-            bvp_patches = rppg.GREEN(signal)
+            bvp_patches = rppg.GREEN(self.rppg_channels)
         elif self.method == 'LGI':
-            bvp_patches = rppg.LGI(signal)
+            bvp_patches = rppg.LGI(self.rppg_channels)
         elif self.method == 'POS':
-            bvp_patches = rppg.POS(signal, fps=self.fps)
+            bvp_patches = rppg.POS(self.rppg_channels, fps=self.fps)
         elif self.method == 'GBGR':
-            bvp_patches = rppg.GBGR(signal)
+            bvp_patches = rppg.GBGR(self.rppg_channels)
         elif self.method == 'ICA':
-            bvp_patches = rppg.ICA(signal, component='second_comp')
+            bvp_patches = rppg.ICA(self.rppg_channels, component='second_comp')
         elif self.method == 'OMIT':
-            bvp_patches = rppg.OMIT(signal)
+            bvp_patches = rppg.OMIT(self.rppg_channels)
         elif self.method == 'PBV':
-            bvp_patches = rppg.PBV(signal)
+            bvp_patches = rppg.PBV(self.rppg_channels)
         elif self.method == 'PCA':
-            bvp_patches = rppg.PCA(signal, component='second_comp')
+            bvp_patches = rppg.PCA(self.rppg_channels, component='second_comp')
         elif self.method == 'SSR':
-            bvp_patches = rppg.GREEN(signal)
-            #bvp = rppg.SSR(signal, fps=self.fps)
+            bvp_patches = rppg.GREEN(self.rppg_channels)
+            #bvp = rppg.SSR(self.rppg_channels, fps=self.fps)
         else:
-            bvp_patches = rppg.GREEN(signal)
+            bvp_patches = rppg.GREEN(self.rppg_channels)
 
-        print(bvp_patches.shape)
         for bvp_patch in bvp_patches:
             signal_filtered = pf.filter_butterworth(bvp_patch, self.fps)
             spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
