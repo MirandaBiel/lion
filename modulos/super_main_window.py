@@ -353,6 +353,11 @@ class SuperMainWindow(QDialog):
             bvp_patches = rppg.GREEN(self.rppg_channels)
 
         for i, bvp_patch in enumerate(bvp_patches):
+            
+            # Aplicar o filtro Butterworth
+            signal_filtered = pf.filter_z_butterworth(bvp_patch, self.fps)
+            time_array = np.linspace(0, len(signal_filtered) / self.fps, len(signal_filtered))
+
             # Gráfico do sinal original (antes de aplicar o filtro)
             graph_generic_signal(
                 bvp_patch, 
@@ -364,10 +369,6 @@ class SuperMainWindow(QDialog):
                 ind_min=None, 
                 ind_max=None
             )
-            
-            # Aplicar o filtro Butterworth
-            signal_filtered = pf.filter_z_butterworth(bvp_patch, self.fps)
-            time_array = np.linspace(0, len(signal_filtered) / self.fps, len(signal_filtered))
             
             # Gráfico do sinal filtrado
             graph_generic_signal(
