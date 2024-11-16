@@ -114,7 +114,7 @@ def processa_um_frame(frame, patches):
         
         # Calcula o tamanho do patch
         l = int((math.sqrt((landmarks_points[337][0] - landmarks_points[108][0])**2 +
-                           (landmarks_points[337][1] - landmarks_points[108][1])**2)) / 5)
+                           (landmarks_points[337][1] - landmarks_points[108][1])**2)) / 4)
         
         # Extrai os patches para análise
         for patch in patches:
@@ -275,6 +275,7 @@ class SuperMainWindow(QDialog):
         self.iq2 = 0
         self.ind_mim = None
         self.ind_max = None
+        self.bvp_patches = []
 
     def extract_raw_signal(self):
         # Zera as listas dos sinais
@@ -323,43 +324,40 @@ class SuperMainWindow(QDialog):
         # Mostra o gráfico da captura no tempo
         plot_rppg_signal(self.rppg_channels, self.fps, self.n_video)
 
-    def process_raw_signal_media(self):
+    def process_raw_signal_mediana(self):
         signal = pf.average_patches_to_single(self.rppg_channels)
-        
         if self.method == 'CHROM':
-            bvp = rppg.CHROM(signal)
+            bvp_patches = rppg.CHROM(signal)
         elif self.method == 'GREEN':
-            bvp = rppg.GREEN(signal)
+            bvp_patches = rppg.GREEN(signal)
         elif self.method == 'LGI':
-            bvp = rppg.LGI(signal)
+            bvp_patches = rppg.LGI(signal)
         elif self.method == 'POS':
-            bvp = rppg.POS(signal, fps=self.fps)
+            bvp_patches = rppg.POS(signal, fps=self.fps)
         elif self.method == 'GBGR':
-            bvp = rppg.GBGR(signal)
+            bvp_patches = rppg.GBGR(signal)
         elif self.method == 'ICA':
-            bvp = rppg.ICA(signal, component='second_comp')
+            bvp_patches = rppg.ICA(signal, component='second_comp')
         elif self.method == 'OMIT':
-            bvp = rppg.OMIT(signal)
+            bvp_patches = rppg.OMIT(signal)
         elif self.method == 'PBV':
-            bvp = rppg.PBV(signal)
+            bvp_patches = rppg.PBV(signal)
         elif self.method == 'PCA':
-            bvp = rppg.PCA(signal, component='second_comp')
+            bvp_patches = rppg.PCA(signal, component='second_comp')
         elif self.method == 'SSR':
-            bvp = rppg.GREEN(signal)
+            bvp_patches = rppg.GREEN(signal)
             #bvp = rppg.SSR(signal, fps=self.fps)
         else:
-            bvp = rppg.GREEN(signal)
+            bvp_patches = rppg.GREEN(signal)
+        
+        time_array = np.linspace(0, bvp_patches[0] / self.fps, bvp_patches[0])
 
-        signal_detrending = pf.detrending_highpass_filter(bvp[0], self.fps)
-        time = np.linspace(0, len(signal_detrending) / self.fps, len(signal_detrending))
-        graph_generic_signal(signal_detrending, 'signal_detrending', time, 'tempo', 'detrending', 'detrending')
-
-        signal_normalized = pf.filter_z(signal_detrending)
-        signal_filtered = pf.filter_butterworth(signal_normalized, self.fps)
-        spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
-        bpm = pf.calc_bpm(spectrum, freqs)
-        print(bpm)
-        irmp = pf.irpm()
+        for bvp_patch in bvp_patches:
+            signal_filtered = pf.filter_butterworth(bvp_patch, self.fps)
+            spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
+            bpm = pf.calc_bpm(spectrum, freqs)
+            print(bpm)
+            irmp = pf.irpm()
 
     def post_callback(self, request):
         if self.cont_enable:
@@ -416,7 +414,7 @@ class SuperMainWindow(QDialog):
 
         # Realiza a extração do sinal
         self.extract_raw_signal()
-        self.process_raw_signal_media()
+        self.process_raw_signal_mediana()
 
     def update_progress(self):
         # Atualiza o tempo decorrido e a barra de progresso
