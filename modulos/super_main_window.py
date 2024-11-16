@@ -352,9 +352,9 @@ class SuperMainWindow(QDialog):
         for bvp_patch in bvp_patches:
             signal_filtered = pf.filter_butterworth(bvp_patch, self.fps)
             time_array = np.linspace(0, len(signal_filtered) / self.fps, len(signal_filtered))
-            graph_generic_signal(signal_filtered, 'signal_filtered', time_array, 'time_array', time_array, 'signal', ind_min=None, ind_max=None)
+            graph_generic_signal(signal_filtered, 'signal_filtered', time_array, 'time_array', 'signal', 'signal', ind_min=None, ind_max=None)
             spectrum, freqs = pf.calculate_fft(signal_filtered, self.fps)
-            graph_generic_signal(spectrum, 'spectrum', freqs, 'freqs', spectrum, 'fft', ind_min=20, ind_max=200)
+            graph_generic_signal(spectrum, 'spectrum', freqs, 'freqs', 'fft', 'fft', ind_min=20, ind_max=200)
             bpm = pf.calc_bpm(spectrum, freqs)
             print(bpm)
             irmp = pf.irpm()
