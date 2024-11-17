@@ -61,7 +61,7 @@ def SNR(signal, axis=0, ddof=0) -> float:
     """
         Esse SQI compara a potência do sinal desejável com a potência do ruído de fundo indesejado.
     """
-    a = np.asanyarray(a)
+    a = np.asanyarray(signal)
     m = a.mean(axis)
     sd = a.std(axis=axis, ddof=ddof)
 
