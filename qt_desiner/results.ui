@@ -106,63 +106,14 @@
      <x>650</x>
      <y>10</y>
      <width>591</width>
-     <height>481</height>
+     <height>151</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridGrafico" rowstretch="2,2,5,5">
-    <item row="3" column="1">
-     <widget class="QSpinBox" name="spinBox_t_sup">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="maximum">
-       <number>99999</number>
-      </property>
-      <property name="value">
-       <number>30</number>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_t_sup">
-      <property name="text">
-       <string>Tempo superior:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_t_inf">
-      <property name="text">
-       <string>Tempo inferior:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QSpinBox" name="spinBox_t_inf">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="maximum">
-       <number>9999</number>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridGrafico" rowstretch="1,1">
     <item row="0" column="1">
      <widget class="QComboBox" name="comboBox_grafico">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -193,6 +144,12 @@
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_metodo">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>Método de análise:</string>
       </property>
@@ -286,17 +243,7 @@ color: rgb(255, 255, 255);</string>
      <height>271</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridSecondResults" columnstretch="5,1">
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_IQ1">
-      <property name="text">
-       <string>IQ1:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridSecondResults" columnstretch="5,0">
     <item row="0" column="0">
      <widget class="QLabel" name="label_t_afericao">
       <property name="text">
@@ -307,18 +254,8 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_t_total">
-      <property name="text">
-       <string>Tempo total (s):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_t_total">
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_t_afericao">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
         <horstretch>0</horstretch>
@@ -333,13 +270,16 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit_t_afericao">
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_iq1">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="text">
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -365,17 +305,36 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_t_analise">
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_iq2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
-       <string>Tempo de análise (s):</string>
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_IQ1">
+      <property name="text">
+       <string>IQ1:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="2" column="0">
      <widget class="QLabel" name="label_IQ2">
       <property name="text">
        <string>IQ2:</string>
@@ -385,41 +344,13 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_iq1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_IQ2_2">
       <property name="text">
-       <string>*</string>
+       <string>IQ3:</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="lineEdit_iq2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>*</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -439,7 +370,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>Análise da amostragem</string>
+    <string>Atualizar</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_main_w">
@@ -457,6 +388,19 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Voltar</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>180</y>
+     <width>611</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

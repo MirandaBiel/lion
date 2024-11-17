@@ -21,8 +21,10 @@ class SuperResults(QDialog):
         self.ui.pushButton_amostragem.clicked.connect(self.mostra_amostragem)
         self.ui.pushButton_grafico.clicked.connect(self.mostra_grafico)
 
+        self.path_grafico = 'cache/plots/BVP_spectrum_1.png'
+
     def mostra_grafico(self):
-        print("MOSTRA GRAFICO")
+        self.ui.label_grafico.setPixmap(QtGui.QPixmap(self.path_grafico))
 
     def mostra_amostragem(self):
         print("MOSTRA AMOSTRAGEM")
