@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 # from picamera2 import Picamera2
 # from picamera2.previews.qt import QGlPicamera2
 import sys
@@ -24,7 +24,7 @@ class SuperResults(QDialog):
         self.path_grafico = 'cache/plots/BVP_spectrum_1.png'
 
     def mostra_grafico(self):
-        ixmap = QtGui.QPixmap(self.path_grafico)
+        pixmap = QtGui.QPixmap(self.path_grafico)
         # Redimensiona o pixmap para caber no label
         pixmap = pixmap.scaled(self.ui.label.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
         self.ui.label.setPixmap(pixmap)

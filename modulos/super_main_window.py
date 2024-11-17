@@ -1,7 +1,7 @@
 # Importações da GUI
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtCore import Qt, pyqtSlot, QTimer
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 from py_GUIs.main_window import Ui_Dialog
 
 # Importações da picamera
