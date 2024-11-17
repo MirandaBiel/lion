@@ -261,6 +261,17 @@ class SuperMainWindow(QDialog):
             controls={"FrameDurationLimits": (self.frame_duration, self.frame_duration)},
             main={"size": self.size}
         )
+        # Arquivo de Log - Caminho para o arquivo na pasta 'cache'
+        self.log_file_path = os.path.join('cache', 'log.txt')
+        
+        # Cria a pasta 'cache' se não existir
+        if not os.path.exists('cache'):
+            os.makedirs('cache')
+        
+        # Cria o arquivo se ele não existir
+        if not os.path.isfile(self.log_file_path):
+            with open(self.log_file_path, 'w') as f:
+                f.write("Arquivo de log iniciado.\n")
 
         # Variáveis para análise
         self.rppg_channels = []
@@ -458,6 +469,8 @@ class SuperMainWindow(QDialog):
 
     def config_camera(self):
         self.ui.picam2.configure(self.config)
+        with open(self.log_file_path, 'w') as f:
+            f.write(str(self.ui.picam2.camera_configuration()) + '\n')
         print(self.ui.picam2.camera_configuration())
 
     def start_capture(self):
@@ -479,6 +492,27 @@ class SuperMainWindow(QDialog):
         # Realiza a extração do sinal
         self.extract_raw_signal()
         self.process_raw_signal_mediana()
+
+        with open(self.log_file_path, 'w') as f:
+            f.write(str(self.ui.picam2.camera_configuration()) + '\n')
+            f.write(f'Numero do video: {self.n_video}' + '\n')
+            f.write(f'Encoder: H264' + '\n')
+            f.write(f'Tempo de captura: {self.tempo_de_captura}' + '\n')
+            f.write(f'Frequência de amostragem: {self.fps}' + '\n')
+            f.write(f'Formato: {self.size}' + '\n')
+            f.write(f'Landmarks gain: {self.landmarks_gain}' + '\n')
+            f.write(f'Metodo: {self.method}' + '\n')
+            f.write(f'Frames capturados: {self.frames_capturados}' + '\n')
+            f.write(f'Frames gravados: {self.frames_gravados}' + '\n')
+            f.write(f'PPGs channels: {self.rppg_channels}' + '\n')
+            f.write(f'PPG channels ssr: {self.rppg_channels_ssr}' + '\n')
+            f.write(f'BPM: {self.bpm}' + '\n')
+            f.write(f'iRPM: {self.irpm}' + '\n')
+            f.write(f'IQ1: {self.iq1}' + '\n')
+            f.write(f'IQ2: {self.iq2}' + '\n')
+            f.write(f'IQ3: {self.iq3}' + '\n')
+            f.write(f'Melhor patch: {self.best_patch}' + '\n')
+            f.write(f'PPG: {self.ppg}' + '\n')
 
     def update_progress(self):
         # Atualiza o tempo decorrido e a barra de progresso
