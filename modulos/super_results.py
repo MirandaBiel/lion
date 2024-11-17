@@ -54,7 +54,7 @@ class SuperResults(QDialog):
         self.ui.lineEdit_iq2.setText(str(self.main_window.iq3))
         self.ui.lineEdit_t_analise.setText(str(self.main_window.iq1))
         self.ui.lineEdit_t_afericao.setText(str(self.main_window.tempo_de_captura / 1000))
-        self.ui.comboBox_metodo.setCurrentText(self.method)
+        self.ui.comboBox_metodo.setCurrentText(self.main_window.method)
             
     def voltar(self):
         self.hide()  # Oculta a janela, mantendo os dados
