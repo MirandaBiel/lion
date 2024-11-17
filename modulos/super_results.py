@@ -21,11 +21,11 @@ class SuperResults(QDialog):
         self.ui.pushButton_amostragem.clicked.connect(self.atualizar)
         self.ui.pushButton_grafico.clicked.connect(self.mostra_grafico)
 
-        self.path_grafico_bvp = self.main_window.path_grafico_bvp
-        self.path_grafico_bvp_filtrado = self.main_window.path_grafico_bvp_filtrado
-        self.path_grafico_espectro = self.main_window.path_grafico_espectro
+        self.path_grafico_bvp = None
+        self.path_grafico_bvp_filtrado = None
+        self.path_grafico_espectro = None
         self.indice_grafico = 0
-        self.path_grafico = self.path_grafico_bvp
+        self.path_grafico = None
 
     def mostra_grafico(self):
         pixmap = QtGui.QPixmap(self.path_grafico)
