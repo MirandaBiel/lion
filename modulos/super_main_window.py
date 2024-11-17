@@ -279,7 +279,7 @@ class SuperMainWindow(QDialog):
         self.ind_max = None
         self.best_patch = 0
         self.ppg = []
-        self.path_grafico_bvp = f'cache/plots/BVP_spectrum_{self.best_patch}.png'
+        self.path_grafico_bvp = f'cache/plots/BVP_signal_{self.best_patch}.png'
         self.path_grafico_bvp_filtrado = f'cache/plots/BVP_filtered_{self.best_patch}.png'
         self.path_grafico_espectro = f'cache/plots/BVP_spectrum_{self.best_patch}.png'
 
