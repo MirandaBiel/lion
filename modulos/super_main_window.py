@@ -503,7 +503,7 @@ class SuperMainWindow(QDialog):
             f.write(f'Landmarks gain: {self.landmarks_gain}' + '\n')
             f.write(f'Metodo: {self.method}' + '\n')
             f.write(f'Frames capturados: {self.frames_capturados}' + '\n')
-            f.write(f'Frames gravados: {self.frames_gravados}' + '\n')
+            f.write(f'Frames gravados: {self.frames_capturados}' + '\n')
             f.write(f'PPGs channels: {self.rppg_channels}' + '\n')
             f.write(f'PPG channels ssr: {self.rppg_channels_ssr}' + '\n')
             f.write(f'BPM: {self.bpm}' + '\n')
