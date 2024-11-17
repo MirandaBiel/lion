@@ -274,10 +274,14 @@ class SuperMainWindow(QDialog):
         self.tempo_de_analise = 52
         self.iq1 = 0
         self.iq2 = 0
+        self.iq3 = 0
         self.ind_mim = None
         self.ind_max = None
         self.best_patch = 0
         self.ppg = []
+        self.path_grafico_bvp = f'cache/plots/BVP_spectrum_{self.best_patch}.png'
+        self.path_grafico_bvp_filtrado = f'cache/plots/BVP_filtered_{self.best_patch}.png'
+        self.path_grafico_espectro = f'cache/plots/BVP_spectrum_{self.best_patch}.png'
 
     def extract_raw_signal(self):
         # Zera as listas dos sinais
@@ -415,7 +419,8 @@ class SuperMainWindow(QDialog):
         self.irpm = irpm[max_index]
         self.best_patch = max_index
         self.iq1 = iq_patches[max_index]
-        self.iq2 = sq.Kurtosis(self.bpm)
+        self.iq2 = sq.Kurtosis(self.ppg[max_index])
+        self.iq3 = sq.SNR(self.ppg[max_index])
 
     def post_callback(self, request):
         if self.cont_enable:

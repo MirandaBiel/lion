@@ -18,10 +18,14 @@ class SuperResults(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.pushButton_main_w.clicked.connect(self.voltar)
-        self.ui.pushButton_amostragem.clicked.connect(self.mostra_amostragem)
+        self.ui.pushButton_amostragem.clicked.connect(self.atualizar)
         self.ui.pushButton_grafico.clicked.connect(self.mostra_grafico)
 
-        self.path_grafico = 'cache/plots/BVP_spectrum_1.png'
+        self.path_grafico_bvp = self.main_window.path_grafico_bvp
+        self.path_grafico_bvp_filtrado = self.main_window.path_grafico_bvp_filtrado
+        self.path_grafico_espectro = self.main_window.path_grafico_espectro
+        self.indice_grafico = 0
+        self.path_grafico = self.path_grafico_bvp
 
     def mostra_grafico(self):
         pixmap = QtGui.QPixmap(self.path_grafico)
@@ -29,8 +33,28 @@ class SuperResults(QDialog):
         pixmap = pixmap.scaled(self.ui.label.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
         self.ui.label.setPixmap(pixmap)
 
-    def mostra_amostragem(self):
-        print("MOSTRA AMOSTRAGEM")
+    def atualizar(self):
+        self.path_grafico_bvp = self.main_window.path_grafico_bvp
+        self.path_grafico_bvp_filtrado = self.main_window.path_grafico_bvp_filtrado
+        self.path_grafico_espectro = self.main_window.path_grafico_espectro
+        self.indice_grafico = self.ui.comboBox_grafico.currentIndex()
+
+        if self.indice_grafico == 0:
+            self.path_grafico = self.path_grafico_bvp
+        elif self.indice_grafico == 1:
+            self.path_grafico = self.path_grafico_bvp_filtrado
+        elif self.indice_grafico == 2:
+            self.path_grafico = self.path_grafico_espectro
+
+        self.mostra_grafico()
+
+        self.ui.lineEdit_bom.setText(str(self.main_window.bpm))
+        self.ui.lineEdit_irpm.setText(str(self.main_window.irpm))
+        self.ui.lineEdit_iq1.setText(str(self.main_window.iq2))
+        self.ui.lineEdit_iq2.setText(str(self.main_window.iq3))
+        self.ui.lineEdit_t_analise.setText(str(self.main_window.iq1))
+        self.ui.lineEdit_t_afericao.setText(str(self.main_window.tempo_de_captura / 1000))
+        self.ui.comboBox_metodo.setCurrentText(self.method)
             
     def voltar(self):
         self.hide()  # Oculta a janela, mantendo os dados
