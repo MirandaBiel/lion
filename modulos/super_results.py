@@ -24,7 +24,7 @@ class SuperResults(QDialog):
         self.path_grafico = 'cache/plots/BVP_spectrum_1.png'
 
     def mostra_grafico(self):
-        self.ui.label_grafico.setPixmap(QtGui.QPixmap(self.path_grafico))
+        self.ui.label.setPixmap(QtGui.QPixmap(self.path_grafico))
 
     def mostra_amostragem(self):
         print("MOSTRA AMOSTRAGEM")
