@@ -38,7 +38,7 @@ class SuperResults(QDialog):
         self.path_grafico_bvp_filtrado = self.main_window.path_grafico_bvp_filtrado
         self.path_grafico_espectro = self.main_window.path_grafico_espectro
         self.indice_grafico = self.ui.comboBox_grafico.currentIndex()
-
+        print(self.indice_grafico)
         if self.indice_grafico == 0:
             self.path_grafico = self.path_grafico_bvp
         elif self.indice_grafico == 1:
@@ -48,12 +48,12 @@ class SuperResults(QDialog):
 
         self.mostra_grafico()
 
-        self.ui.lineEdit_bom.setText(str(self.main_window.bpm))
-        self.ui.lineEdit_irpm.setText(str(self.main_window.irpm))
-        self.ui.lineEdit_iq1.setText(str(self.main_window.iq2))
-        self.ui.lineEdit_iq2.setText(str(self.main_window.iq3))
-        self.ui.lineEdit_t_analise.setText(str(self.main_window.iq1))
-        self.ui.lineEdit_t_afericao.setText(str(self.main_window.tempo_de_captura / 1000))
+        self.ui.lineEdit_bom.setText(str(round(self.main_window.bpm, 2)))
+        self.ui.lineEdit_irpm.setText(str(round(self.main_window.irpm, 2)))
+        self.ui.lineEdit_iq1.setText(str(round(self.main_window.iq2, 2)))
+        self.ui.lineEdit_iq2.setText(str(round(self.main_window.iq3, 2)))
+        self.ui.lineEdit_t_analise.setText(str(round(self.main_window.iq1, 2)))
+        self.ui.lineEdit_t_afericao.setText(str(round(self.main_window.tempo_de_captura / 1000, 2)))
         self.ui.comboBox_metodo.setCurrentText(self.main_window.method)
             
     def voltar(self):
