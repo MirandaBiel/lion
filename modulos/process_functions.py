@@ -1,13 +1,5 @@
 from scipy.signal import butter, filtfilt, find_peaks
-from scipy.interpolate import CubicSpline
-from scipy.linalg import inv
 import numpy as np
-
-# Calcula a média do sinal dos patches
-def average_patches_to_single(arr):
-    # Calcular a média ao longo da primeira dimensão (num_patches)
-    averaged_array = np.mean(arr, axis=0, keepdims=True)
-    return averaged_array
 
 # Apenas normaliza o sinal usando Z-score
 def filter_z(signal):
@@ -22,12 +14,12 @@ def filter_z(signal):
 def filter_butterworth(signal, fs, order=6):
     # Aplica o filtro de passa banda
     nyquist = 0.5 * fs
-    f_low = 0.7
-    f_high = 6
+    f_low = 0.6
+    f_high = 3.6
 
     # Calcular as frequências normalizadas
-    wn_low =  f_low / nyquist
-    wn_high = f_high / nyquist
+    wn_low = 2 * f_low / nyquist
+    wn_high = 2 * f_high / nyquist
 
     # Calcular os coeficientes do filtro Butterworth
     b, a = butter(order, [wn_low, wn_high], btype='band')
@@ -45,13 +37,35 @@ def filter_z_butterworth(signal, fs):
     return y
 
 # Alinha a onda no eixo x e aplica o filtro de Butterworth
-def filter_align_buterworth(signal, fs):
+def filter_align_butterworth(signal, fs):
     x = np.mean(signal)
     signal = (signal - x)
 
     y = filter_butterworth(signal, fs)
 
     return y
+
+# Função que aprimora os picos do sinal
+def peak_enhancement(sig):
+    rb = 1024 # rb é o intervalo do limite superior
+    l_lt = 0 # l_lt o intervalo dos limites inferiores
+    P_aprimorado = rb*((sig-min(sig))/(max(sig) - min(sig))) + l_lt
+
+    return P_aprimorado
+
+# Função que aplica o filtro de hampel para remoção de pontos fora da curva
+def hampel_filter(sig, window_size=6, n_sigma=3):
+    hampel_filter_sig = sig.copy()
+    for i in range(len(sig) - window_size + 1):
+        window = sig[i:i + window_size]
+        mediana = np.median(window)
+        mad = np.median(np.abs(window - mediana))
+        threshold = mediana + (n_sigma * mad)
+        for j in range(i, i + window_size):
+            if sig[j] > threshold:
+                hampel_filter_sig[j] = mediana
+
+    return hampel_filter_sig
 
 # Passa alta detrending
 def detrending_highpass_filter(signal, fs, lambda_value=300):
@@ -77,7 +91,7 @@ def detrending_highpass_filter(signal, fs, lambda_value=300):
     n_signal = signal[:-1]
     
     # Calcula o sinal de baixa frequência
-    low_freq_signal = np.dot(n_signal, inv(A))
+    #low_freq_signal = np.dot(n_signal, inv(A))
 
     # Calcula o sinal filtrado subtraindo o sinal de baixa frequência do sinal original
     filtered_signal = n_signal - low_freq_signal
@@ -89,7 +103,7 @@ def detrending_highpass_filter(signal, fs, lambda_value=300):
     return filtered_signal
 
 # Transformada de Fourier
-def calculate_fft(signal, fs, padding_factor=100):
+def calculate_fft(signal, fs, padding_factor=10):
     # Calcular a FFT com padding
     fft_result = np.fft.fft(signal, n=len(signal) * padding_factor)
     spectrum = np.abs(fft_result)  # Módulo do espectro
@@ -98,7 +112,7 @@ def calculate_fft(signal, fs, padding_factor=100):
     return spectrum, freqs
 
 # Estima bpm
-def calc_frequencia_cardiaca(spectrum, freqs, min_freq=30, max_freq=216):
+def find_peak_in_range(spectrum, freqs, min_freq=30, max_freq=216):
     # Encontrar os índices que correspondem à faixa de frequências desejada
     start_index = np.argmax(freqs >= min_freq)
     end_index = np.argmax(freqs >= max_freq)
@@ -116,24 +130,8 @@ def calc_frequencia_cardiaca(spectrum, freqs, min_freq=30, max_freq=216):
 
     return peak_frequency
 
-# Interpolação polinomial Spline Cúbica
-def cubic_spline_interpolation(signal, sampling_freq, interp_freq=200):
-    # Tempo original
-    t_original = np.arange(len(signal)) / sampling_freq
-    print(t_original)
-    
-    # Tempo interpolado
-    t_interp = np.arange(0, t_original[-1], 1 / interp_freq)
-    print(t_interp)
-    
-    # Interpolação cúbica spline
-    cubic_spline = CubicSpline(t_original, signal)
-    interpolated_signal = cubic_spline(t_interp)
-    
-    return interpolated_signal, t_interp
-
-# índice de qualidade
-def analyze_signal_spectrum(spectrum, freqs, min_bpm=30, max_bpm=200, num_peaks=20):
+# Índice de confiança
+def analyze_signal_spectrum(spectrum, freqs, file, min_bpm=30, max_bpm=200, num_peaks=20):
     # Encontrar os índices correspondentes à faixa de frequências entre min_bpm e max_bpm
     start_index = np.argmax(freqs >= min_bpm)
     end_index = np.argmax(freqs >= max_bpm)
@@ -155,52 +153,22 @@ def analyze_signal_spectrum(spectrum, freqs, min_bpm=30, max_bpm=200, num_peaks=
     peak_frequencies = freqs[top_peaks]
     peak_amplitudes = spectrum[top_peaks]
 
-    # **Cálculo do índice de qualidade**
-    if len(peak_amplitudes) > 1:
-        # Normalizar as amplitudes dividindo pelo maior valor
-        normalized_amplitudes = peak_amplitudes / np.max(peak_amplitudes)
+    # Escrever as frequências e amplitudes no arquivo
+    for i, (frequency, amplitude) in enumerate(zip(peak_frequencies, peak_amplitudes), 1):
+        #file.write(f'Heart Rate Frequency {i} in BPM: {frequency:.2f}, Amplitude: {amplitude:.2f}\n')
+        pass
 
-        # Calcular o índice de qualidade: maior valor menos a média dos outros valores
-        max_value = np.max(normalized_amplitudes)
-        mean_others = np.mean(normalized_amplitudes[normalized_amplitudes != max_value])
-        quality_index = max_value - mean_others
-    else:
-        # Caso haja apenas um pico, o índice de qualidade é zero
-        quality_index = 0
+    return peak_frequencies, peak_amplitudes
 
-    return quality_index
-
-# Função que aprimora os picos do sinal
-def peak_enhancement(sig):
-    rb = 1024 # rb é o intervalo do limite superior
-    l_lt = 0 # l_lt o intervalo dos limites inferiores
-    P_aprimorado = rb*((sig-min(sig))/(max(sig) - min(sig))) + l_lt
-
-    return P_aprimorado
-
-# Função que aplica o filtro de hampel para remoção de pontos fora da curva
-def hampel_filter(sig, window_size=6, n_sigma=3):
-    hampel_filter_sig = sig.copy()
-    for i in range(len(sig) - window_size + 1):
-        window = sig[i:i + window_size]
-        mediana = np.median(window)
-        mad = np.median(np.abs(window - mediana))
-        threshold = mediana + (n_sigma * mad)
-        for j in range(i, i + window_size):
-            if sig[j] > threshold:
-                hampel_filter_sig[j] = mediana
-
-    return hampel_filter_sig
-
-# Estima irpm
+# Função que calcula a frequencia respiratoria
 def calc_frequencia_respiratoria(signal, fs):
     # Pre-processamento do sinal
     nyquist = 0.5 * fs
     f_low = 0.1
     f_high = 0.4
     # Calcular as frequências normalizadas
-    wn_low = f_low / nyquist
-    wn_high = f_high / nyquist
+    wn_low = 2 * f_low / nyquist
+    wn_high = 2 * f_high / nyquist
     # Calcular os coeficientes do filtro Butterworth
     b, a = butter(2, [wn_low, wn_high], btype='band')
     # Aplicar o filtro passa-faixa
@@ -218,7 +186,7 @@ def calc_frequencia_respiratoria(signal, fs):
     Median_sig = np.array(Median_sig)
 
     # 2: Aplicação da FFT no vetor resultante e seleção do pico de frequência dominante dentro da faixa RR válida - entre 4 rpm (0,06 Hz) e 60 rpm (1 Hz)
-    padding_factor = 1000
+    padding_factor = 100
     FFT_sig = np.fft.fft(Median_sig, n=len(Median_sig)*(padding_factor+1))
     f = np.fft.fftfreq(len(FFT_sig), 1/fs)
     spectrum = np.abs(FFT_sig)  # Calcular o modulo espectral
@@ -243,7 +211,10 @@ def calc_frequencia_respiratoria(signal, fs):
     # Obter as frequencias correspondentes aos maiores picos
     frequencias_picos = f[top_peaks]
     amplitudes_picos = spectrum[top_peaks]
-    fr = frequencias_picos[0]
+    if len(frequencias_picos) != 0:
+        fr = frequencias_picos[0]
+    else:
+        fr = 0
 
     # 3: Multiplicando a frequencia dominante por 60 para converter para "rpm"
     return fr * 60

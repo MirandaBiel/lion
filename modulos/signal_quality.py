@@ -19,8 +19,7 @@ def PPG_analysis(signal: list, fs: float, window_size: int) -> dict:
     window_size = window_size * fs
     exc_window = []
     acc_window = []
-    lowest_SQI = float('inf')
-    b_NSQI = None
+    lowest_NSQI = float('inf')
     b_KSQI = None
 
     for i in range(0, len(signal) - window_size + 1):
@@ -28,18 +27,15 @@ def PPG_analysis(signal: list, fs: float, window_size: int) -> dict:
 
         NSQI = abs(SNR(window))    
         KSQI = abs(Kurtosis(window))
-        if NSQI < lowest_SQI:
+        if NSQI < lowest_NSQI:
             if NSQI < 0.293:
                 exc_window = window
-                b_NSQI = NSQI
-                b_KSQI = KSQI
             elif NSQI > 0.293 and KSQI < 0.221:
                 acc_window = window
-                b_NSQI = NSQI
                 b_KSQI = KSQI
-            lowest_SQI = NSQI
+            lowest_NSQI = NSQI
 
-    return {'acc_window': acc_window, 'exc_window': exc_window, 'NSQI': b_NSQI, 'KSQI': b_KSQI}
+    return {'acc_window': acc_window, 'exc_window': exc_window, 'LSQI': lowest_NSQI, 'KSQI': b_KSQI}
 
 """ 
     As funções abaixo devem receber um sinal PPG no formato list ou np.array

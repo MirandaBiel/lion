@@ -138,72 +138,73 @@ def plot_rppg_signal(rppg_data, fs):
         plt.grid(True)
         plt.show()
 
-# Caminho do vídeo
-caminho_video = 'video_face_1.h264'
+if __name__ == '__main__':
+    # Caminho do vídeo
+    caminho_video = 'video_face_1.h264'
 
-# Lista para armazenar os valores RGB
-rppg_channels = []
-rppg_channels_ssr = []
+    # Lista para armazenar os valores RGB
+    rppg_channels = []
+    rppg_channels_ssr = []
 
-# Abre o vídeo
-captura = cv2.VideoCapture(caminho_video)
+    # Abre o vídeo
+    captura = cv2.VideoCapture(caminho_video)
 
-if not captura.isOpened():
-    print("Erro ao abrir o vídeo.")
-else:
-    while True:
-        ret, frame = captura.read()
-        if not ret:
-            print("Fim do vídeo ou erro ao ler frame.")
-            break
-        
-        # Processa o frame e armazena o resultado
-        rgb_values = processa_um_frame(frame)  # Agora retorna [num_patches, 3]
-        rppg_channels.append(rgb_values)
+    if not captura.isOpened():
+        print("Erro ao abrir o vídeo.")
+    else:
+        while True:
+            ret, frame = captura.read()
+            if not ret:
+                print("Fim do vídeo ou erro ao ler frame.")
+                break
+            
+            # Processa o frame e armazena o resultado
+            rgb_values = processa_um_frame(frame)  # Agora retorna [num_patches, 3]
+            rppg_channels.append(rgb_values)
 
-        # Processa o frame e extrai o patch 151 com tamanho fixo
-        patch_crop = processa_um_frame_ssr(frame, target_size=(32, 32))
-        rppg_channels_ssr.append(patch_crop)
-        
-        # Exibe o frame
-        cv2.imshow('Frame', frame)
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            break
+            # Processa o frame e extrai o patch 151 com tamanho fixo
+            patch_crop = processa_um_frame_ssr(frame, target_size=(32, 32))
+            rppg_channels_ssr.append(patch_crop)
+            
+            # Exibe o frame
+            cv2.imshow('Frame', frame)
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
 
-# Libera o objeto de captura e fecha a janela
-captura.release()
-cv2.destroyAllWindows()
+    # Libera o objeto de captura e fecha a janela
+    captura.release()
+    cv2.destroyAllWindows()
 
-# Converte a lista para um ndarray com shape [num_patches, 3, num_frames]
-rppg_channels = np.array(rppg_channels, dtype=np.float32)
-rppg_channels = rppg_channels.transpose(1, 2, 0)
+    # Converte a lista para um ndarray com shape [num_patches, 3, num_frames]
+    rppg_channels = np.array(rppg_channels, dtype=np.float32)
+    rppg_channels = rppg_channels.transpose(1, 2, 0)
 
-# Converte a lista para um ndarray com o formato necessário [num_frames, rows, columns, rgb_channels]
-rppg_channels_ssr = np.array(rppg_channels_ssr, dtype=np.float32)
+    # Converte a lista para um ndarray com o formato necessário [num_frames, rows, columns, rgb_channels]
+    rppg_channels_ssr = np.array(rppg_channels_ssr, dtype=np.float32)
 
-# Mostra o gráfico das capturas no tempo
-plot_rppg_signal(rppg_channels, fs)
+    # Mostra o gráfico das capturas no tempo
+    plot_rppg_signal(rppg_channels, fs)
 
-# Aplicar métodos rPPG
-bvp_chrom = rppg.CHROM(rppg_channels)
-bvp_green = rppg.GREEN(rppg_channels)
-bvp_lgi = rppg.LGI(rppg_channels)
-bvp_pos = rppg.POS(rppg_channels, fps=fs)
-bvp_gbgr = rppg.GBGR(rppg_channels)
-bvp_ica = rppg.ICA(rppg_channels, component='second_comp')
-bvp_omit = rppg.OMIT(rppg_channels)
-bvp_pbv = rppg.PBV(rppg_channels)
-bvp_pca = rppg.PCA(rppg_channels, component='second_comp')
-bvp_ssr = rppg.SSR(rppg_channels_ssr, fps=fs)
+    # Aplicar métodos rPPG
+    bvp_chrom = rppg.CHROM(rppg_channels)
+    bvp_green = rppg.GREEN(rppg_channels)
+    bvp_lgi = rppg.LGI(rppg_channels)
+    bvp_pos = rppg.POS(rppg_channels, fps=fs)
+    bvp_gbgr = rppg.GBGR(rppg_channels)
+    bvp_ica = rppg.ICA(rppg_channels, component='second_comp')
+    bvp_omit = rppg.OMIT(rppg_channels)
+    bvp_pbv = rppg.PBV(rppg_channels)
+    bvp_pca = rppg.PCA(rppg_channels, component='second_comp')
+    bvp_ssr = rppg.SSR(rppg_channels_ssr, fps=fs)
 
-# Lista de sinais e seus rótulos
-bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca, bvp_ssr]
+    # Lista de sinais e seus rótulos
+    bvp_signals = [bvp_chrom, bvp_green, bvp_lgi, bvp_pos, bvp_gbgr, bvp_ica, bvp_omit, bvp_pbv, bvp_pca, bvp_ssr]
 
-# Analisa os formatos de retorno
-for i in bvp_signals:
-    print(f'Shape: {i.shape}')
+    # Analisa os formatos de retorno
+    for i in bvp_signals:
+        print(f'Shape: {i.shape}')
 
-labels = ['CHROM', 'GREEN', 'LGI', 'POS', 'GBGR', 'ICA', 'OMIT', 'PBV', 'PCA', 'SSR']
+    labels = ['CHROM', 'GREEN', 'LGI', 'POS', 'GBGR', 'ICA', 'OMIT', 'PBV', 'PCA', 'SSR']
 
-# Plotar os sinais BVP extraídos
-plot_bvp_signals_separately(bvp_signals, labels, fs)
+    # Plotar os sinais BVP extraídos
+    plot_bvp_signals_separately(bvp_signals, labels, fs)
