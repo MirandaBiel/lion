@@ -48,7 +48,7 @@ class SuperConfig(QDialog):
         self.ui.checkBox_6.setChecked(True)
         self.ui.checkBox_69.setChecked(True)
         self.ui.checkBox_9.setChecked(True)
-        self.ui.comboBox_metodo.setCurrentIndex(1)
+        self.ui.comboBox_metodo.setCurrentIndex(9)
 
         self.ui.comboBox_metodo
         self.ui.radioButton_espectro
