@@ -48,6 +48,7 @@ class SuperConfig(QDialog):
         self.ui.checkBox_6.setChecked(True)
         self.ui.checkBox_69.setChecked(True)
         self.ui.checkBox_9.setChecked(True)
+        self.ui.comboBox_metodo.setCurrentText(self.main_window.method)
 
         self.ui.comboBox_metodo
         self.ui.radioButton_espectro
