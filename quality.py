@@ -4,7 +4,7 @@ import numpy as np
 import math
 import cv2
 import rPPG_Methods as rppg
-import Signal_Quality as sqi
+import signal_quality as sqi
 
 # Parâmetros
 patches = [151, 101, 330]  # Regiões de interesse (números de landmarks)

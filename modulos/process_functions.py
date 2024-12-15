@@ -103,7 +103,7 @@ def detrending_highpass_filter(signal, fs, lambda_value=300):
     return filtered_signal
 
 # Transformada de Fourier
-def calculate_fft(signal, fs, padding_factor=10):
+def calculate_fft(signal, fs, padding_factor=100):
     # Calcular a FFT com padding
     fft_result = np.fft.fft(signal, n=len(signal) * padding_factor)
     spectrum = np.abs(fft_result)  # Módulo do espectro
