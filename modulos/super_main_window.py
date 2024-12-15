@@ -24,6 +24,10 @@ import numpy as np
 import io
 import time
 import os
+import json
+
+# Nome do arquivo JSON
+ARQUIVO_JSON = "contador.json"
 
 # Importações as classes correspondentes de cada janela da pasta 'modulos'
 from modulos.super_foco import SuperFoco
@@ -209,6 +213,27 @@ def plot_rppg_signal(rppg_data, fs, n_video, output_dir='cache/plots'):
         plt.close()  # Fecha a figura para liberar memória
         print(f"Gráfico salvo em: {output_path}")
 
+def ler_valor():
+    """
+    Lê o valor atual do arquivo JSON.
+    Se o arquivo não existir, retorna 0.
+    """
+    if os.path.exists(ARQUIVO_JSON):
+        with open(ARQUIVO_JSON, "r") as arquivo:
+            try:
+                dados = json.load(arquivo)
+                return dados.get("contador", 0)
+            except json.JSONDecodeError:
+                return 0
+    return 0
+
+def salvar_valor(valor):
+    """
+    Salva o valor atual no arquivo JSON.
+    """
+    with open(ARQUIVO_JSON, "w") as arquivo:
+        json.dump({"contador": valor}, arquivo, indent=4)
+
 # Classe principal que expande a janela principal da aplicação
 class SuperMainWindow(QDialog):
     def __init__(self, *args, **kwargs):
@@ -230,7 +255,7 @@ class SuperMainWindow(QDialog):
         self.results_window = SuperResults(self)
 
         # Variáveis para captura
-        self.n_video = 5
+        self.n_video = ler_valor()
         self.encoder = H264Encoder()
         self.video_path = os.path.join('cache', f'video_face_{self.n_video}.h264')
         self.output = FileOutput(self.video_path)
@@ -241,7 +266,8 @@ class SuperMainWindow(QDialog):
         self.fps = 30
         self.frame_duration = int(1000000 / self.fps)
         self.size = (800, 600)
-        self.landmarks = [151, 101, 330]
+        #self.landmarks = [151, 101, 330]
+        self.landmarks = [151, 101, 330, 10, 104, 107, 108, 109, 135, 18, 188, 199, 266, 280, 299, 333, 336, 337, 338, 347, 36, 364, 4, 50, 6, 69, 9]
         self.landmarks_gain = 1
         self.method = 'GBGR'
         self.analysis = 'espectral'
@@ -513,6 +539,10 @@ class SuperMainWindow(QDialog):
             f.write(f'IQ3: {self.iq3}' + '\n')
             f.write(f'Melhor patch: {self.best_patch}' + '\n')
             f.write(f'PPG: {self.ppg}' + '\n')
+
+        self.n_video = self.n_video + 1
+        salvar_valor(self.n_video)
+        self.video_path = os.path.join('cache', f'video_face_{self.n_video}.h264')
 
     def update_progress(self):
         # Atualiza o tempo decorrido e a barra de progresso
