@@ -18,8 +18,8 @@ def filter_butterworth(signal, fs, order=6):
     f_high = 3.6
 
     # Calcular as frequências normalizadas
-    wn_low = 2 * f_low / nyquist
-    wn_high = 2 * f_high / nyquist
+    wn_low =  f_low / nyquist
+    wn_high = f_high / nyquist
 
     # Calcular os coeficientes do filtro Butterworth
     b, a = butter(order, [wn_low, wn_high], btype='band')
@@ -112,7 +112,7 @@ def calculate_fft(signal, fs, padding_factor=10):
     return spectrum, freqs
 
 # Estima bpm
-def find_peak_in_range(spectrum, freqs, min_freq=30, max_freq=216):
+def calc_frequencia_cardiaca(spectrum, freqs, min_freq=30, max_freq=216):
     # Encontrar os índices que correspondem à faixa de frequências desejada
     start_index = np.argmax(freqs >= min_freq)
     end_index = np.argmax(freqs >= max_freq)
@@ -167,8 +167,8 @@ def calc_frequencia_respiratoria(signal, fs):
     f_low = 0.1
     f_high = 0.4
     # Calcular as frequências normalizadas
-    wn_low = 2 * f_low / nyquist
-    wn_high = 2 * f_high / nyquist
+    wn_low = f_low / nyquist
+    wn_high = f_high / nyquist
     # Calcular os coeficientes do filtro Butterworth
     b, a = butter(2, [wn_low, wn_high], btype='band')
     # Aplicar o filtro passa-faixa
