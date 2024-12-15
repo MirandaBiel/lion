@@ -130,8 +130,7 @@ def calc_frequencia_cardiaca(spectrum, freqs, min_freq=30, max_freq=216):
 
     return peak_frequency
 
-# Índice de confiança
-def analyze_signal_spectrum(spectrum, freqs, file, min_bpm=30, max_bpm=200, num_peaks=20):
+def analyze_signal_spectrum(spectrum, freqs, min_bpm=30, max_bpm=200, num_peaks=20):
     # Encontrar os índices correspondentes à faixa de frequências entre min_bpm e max_bpm
     start_index = np.argmax(freqs >= min_bpm)
     end_index = np.argmax(freqs >= max_bpm)
@@ -153,12 +152,20 @@ def analyze_signal_spectrum(spectrum, freqs, file, min_bpm=30, max_bpm=200, num_
     peak_frequencies = freqs[top_peaks]
     peak_amplitudes = spectrum[top_peaks]
 
-    # Escrever as frequências e amplitudes no arquivo
-    for i, (frequency, amplitude) in enumerate(zip(peak_frequencies, peak_amplitudes), 1):
-        #file.write(f'Heart Rate Frequency {i} in BPM: {frequency:.2f}, Amplitude: {amplitude:.2f}\n')
-        pass
+    # **Cálculo do índice de qualidade**
+    if len(peak_amplitudes) > 1:
+        # Normalizar as amplitudes dividindo pelo maior valor
+        normalized_amplitudes = peak_amplitudes / np.max(peak_amplitudes)
 
-    return peak_frequencies, peak_amplitudes
+        # Calcular o índice de qualidade: maior valor menos a média dos outros valores
+        max_value = np.max(normalized_amplitudes)
+        mean_others = np.mean(normalized_amplitudes[normalized_amplitudes != max_value])
+        quality_index = max_value - mean_others
+    else:
+        # Caso haja apenas um pico, o índice de qualidade é zero
+        quality_index = 0
+
+    return quality_index
 
 # Função que calcula a frequencia respiratoria
 def calc_frequencia_respiratoria(signal, fs):
