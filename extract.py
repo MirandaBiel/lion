@@ -4,6 +4,7 @@ import numpy as np
 import math
 import cv2
 import rPPG_Methods as rppg
+import os
 
 # Parâmetros
 patches = [151, 101, 330]  # Regiões de interesse (números de landmarks)
@@ -139,8 +140,10 @@ def plot_rppg_signal(rppg_data, fs):
         plt.show()
 
 if __name__ == '__main__':
-    # Caminho do vídeo
-    caminho_video = 'video_face_1.h264'
+    # Caminho correto do vídeo
+    video_folder = "cache"
+    video_name = "video_face_1.h264"
+    caminho_video = os.path.join(video_folder, video_name)
 
     # Lista para armazenar os valores RGB
     rppg_channels = []
