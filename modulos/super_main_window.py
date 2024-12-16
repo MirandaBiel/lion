@@ -359,6 +359,7 @@ class SuperMainWindow(QDialog):
 
         # Converte a lista para um ndarray com shape [num_patches, 3, num_frames]
         self.rppg_channels = np.array(self.rppg_channels, dtype=np.float32)
+        print(self.rppg_channels.shape)
         self.rppg_channels = self.rppg_channels.transpose(1, 2, 0)
 
         # Converte a lista para um ndarray com o formato necessário [num_frames, rows, columns, rgb_channels]
