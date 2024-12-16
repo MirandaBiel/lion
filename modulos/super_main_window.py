@@ -566,7 +566,7 @@ class SuperMainWindow(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
-    # Cria uma instância da janela principal
+    # Cria uma instância da janela principall
     main_window = SuperMainWindow()
     main_window.show()
 
