@@ -410,7 +410,7 @@ class SuperMainWindow(QDialog):
                 time_array, 
                 'Tempo', 
                 'Sinal Original', 
-                f'BVP_signal_{i}.png',  # Nome do arquivo com o índice
+                f'{self.n_video}_BVP_signal_{i}.png',  # Nome do arquivo com o índice
                 ind_min=None, 
                 ind_max=None
             )
@@ -422,7 +422,7 @@ class SuperMainWindow(QDialog):
                 time_array, 
                 'Tempo', 
                 'Sinal Filtrado', 
-                f'BVP_filtered_{i}.png',  # Nome do arquivo com o índice
+                f'{self.n_video}_BVP_filtered_{i}.png',  # Nome do arquivo com o índice
                 ind_min=None, 
                 ind_max=None
             )
@@ -437,7 +437,7 @@ class SuperMainWindow(QDialog):
                 freqs, 
                 'Frequência (bpm)', 
                 'Análise Espectral', 
-                f'BVP_spectrum_{i}.png',  # Nome do arquivo com o índice
+                f'{self.n_video}BVP_spectrum_{i}.png',  # Nome do arquivo com o índice
                 ind_min=20, 
                 ind_max=200
             )
