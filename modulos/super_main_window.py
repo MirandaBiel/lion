@@ -287,7 +287,7 @@ class SuperMainWindow(QDialog):
             controls={"FrameDurationLimits": (self.frame_duration, self.frame_duration)},
             main={"size": self.size}
         )
-        
+
         # Arquivo de Log - Caminho para o arquivo na pasta 'cache'
         self.log_file_path = os.path.join('cache', 'log.txt')
 
@@ -524,7 +524,7 @@ class SuperMainWindow(QDialog):
         self.process_raw_signal_mediana()
 
         # Arquivo de Log - Caminho para o arquivo na pasta 'cache'
-        self.log_file_path = os.path.join('cache', f'{self.n_video}log.txt')
+        self.log_file_path = os.path.join('cache', f'{self.n_video}_log.txt')
 
         with open(self.log_file_path, 'w') as f:
             f.write(str(self.ui.picam2.camera_configuration()) + '\n')
